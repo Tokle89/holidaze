@@ -1,32 +1,32 @@
-import CustomButton from "../../components/Button";
 import HeroSection from "../../components/HeroSection";
-import { Link } from "react-router-dom";
-
-const RegisterSection = () => {
-  return (
-    <div className="flex text-primary m-auto max-w-7xl justify-between my-14">
-      <div className="flex flex-col items-center  max-w-md">
-        <p className="mb-7 text-xl ">Create your customer account now, and begin your next adventure</p>
-        <Link to="/register">
-          <CustomButton className="text-white bg-tertiary border-tertiary  hover:bg-white hover:text-tertiary">Register</CustomButton>
-        </Link>
-      </div>
-      <p className=" font-bold text-xl ">Or</p>
-      <div className="flex flex-col items-center  max-w-md">
-        <p className="mb-7 text-xl">Become a host today and unlock a world of opportunities</p>
-        <Link to="/host">
-          <CustomButton className="text-white bg-tertiary border-tertiary  hover:bg-white hover:text-tertiary">Sign up</CustomButton>
-        </Link>
-      </div>
-    </div>
-  );
-};
+import RegisterOptionSection from "../../components/RegisterOptionSection";
+import useFetch from "../../hooks/useFetch";
+import Urls from "../../constants/url";
+import CardLink from "../../components/Card";
 
 const Home = () => {
+  const { result, isLoading, isError } = useFetch(Urls.venuesUrl);
+
+  let { data } = result;
+  console.log(data, isLoading, isError);
+
+  let content;
+
+  if (isLoading) {
+    content = <p>Loading...</p>;
+  } else if (isError) {
+    content = <p>Something went wrong</p>;
+  } else if (data) {
+    content = data.map((venue) => <CardLink data={venue} key={venue.id} />);
+  }
   return (
     <main>
       <HeroSection />
-      <RegisterSection />
+      <RegisterOptionSection />
+      <section>
+        <h2>Popular venues</h2>
+        <div> {content}</div>
+      </section>
     </main>
   );
 };
