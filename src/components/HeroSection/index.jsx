@@ -1,8 +1,8 @@
 import CustomButton from "../../components/Button";
 const HeroSection = () => {
   return (
-    <div className="relative h-[450px]">
-      <div className="relative bg-cover bg-center w-full h-full" style={{ backgroundImage: `url(/public/images/background.jpg)` }}>
+    <div className="relative h-[450px] ">
+      <div className="relative bg-cover  bg-center w-full h-full" style={{ backgroundImage: `url(/public/images/background.jpg)` }}>
         <div className="absolute inset-0 bg-gradient-to-b from-primary to-transparent mix-blend-multiply"></div>
         <div className="absolute inset-0 flex mt-20 justify-center text-center text-secondary">
           <div className="relative z-10">

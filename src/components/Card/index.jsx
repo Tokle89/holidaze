@@ -18,7 +18,7 @@ const CardLink = ({ data }) => {
       <CardBody className="flex-1 py-5 pt-5 pb-0">
         <div className=" flex items-center justify-between">
           <Typography variant="h5" className="font-medium text-black ">
-            <TruncateTitle title={name} />
+            {name ? <TruncateTitle title={name} /> : "No name"}
           </Typography>
 
           <Typography color="blue-gray" className="flex items-center gap-1.5 font-normal">
@@ -32,9 +32,11 @@ const CardLink = ({ data }) => {
             {rating}
           </Typography>
         </div>
+
         <Typography variant="h6" className="font-medium text-black ">
-          {location.city}
+          <span> {location ? location.city : "Norway"}</span>
         </Typography>
+
         <Typography color="gray">
           <span className="font-bold text-red-600">{price} KR</span> per night
         </Typography>
