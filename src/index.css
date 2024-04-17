@@ -28,4 +28,8 @@
   input {
     font-size: 1.1rem;
   }
+  img {
+    max-width: 100%;
+    object-fit: cover;
+  }
 }

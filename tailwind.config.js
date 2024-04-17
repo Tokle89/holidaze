@@ -23,6 +23,12 @@ export default withMT({
         "4xl": "2.441rem",
         "5xl": "3.052rem",
       },
+      screens: {
+        sm: "480px",
+        md: "768px",
+        lg: "976px",
+        xl: "1440px",
+      },
     },
   },
   plugins: [],
