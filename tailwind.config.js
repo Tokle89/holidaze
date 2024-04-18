@@ -10,9 +10,10 @@ export default withMT({
         ubuntu: ["Ubuntu", "sans-serif"],
       },
       colors: {
-        primary: "#1d1d5a",
+        primary: "#1D4091",
         secondary: "#ffac4d",
-        tertiary: "#0f63ac",
+        tertiary: "#1378D1",
+        orange: "#ffac4d",
       },
       fontSize: {
         sm: "0.8rem",
