@@ -1,7 +1,7 @@
 import CustomButton from "../../components/Button";
 const HeroSection = () => {
   return (
-    <div className="relative h-[450px] ">
+    <div className="relative h-[450px] " id="heroSection">
       <div className="relative bg-cover  bg-center w-full h-full" style={{ backgroundImage: `url(/public/images/background.jpg)` }}>
         <div className="absolute top-0 left-0 right-0 h-3/5 bg-gradient-to-b from-primary to-transparent opacity-100">
           <div className="absolute inset-0 bg-gradient-to-b from-primary to-transparent "></div>
