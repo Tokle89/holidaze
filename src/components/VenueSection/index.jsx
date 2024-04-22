@@ -1,5 +1,5 @@
 import useFetch from "../../hooks/useFetch";
-import CardLink from "../Card";
+import CardLink from "../Cards/Card";
 import { useState, useEffect } from "react";
 import Urls from "../../constants/url";
 import { Link, useLocation } from "react-router-dom";
@@ -8,7 +8,7 @@ const VenueSection = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [dynamicHeader, setDynamicHeader] = useState("Latest Venues");
   const location = useLocation();
-  const [ratingUrl, setRatingUrl] = useState(Urls.venuesUrl);
+  const [ratingUrl, setRatingUrl] = useState(Urls.venuesUrl + Urls.queryParamUrl);
 
   const { data, isLoading, isError } = useFetch(ratingUrl);
 
@@ -16,7 +16,7 @@ const VenueSection = () => {
     const hashParams = new URLSearchParams(location.hash.split("?")[1]);
     const sortBy = hashParams.get("sort") || "created";
     const sortOrder = hashParams.get("sortOrder") || "desc";
-    const newRatingUrl = `${Urls.venuesUrl}?sort=${sortBy}&sortOrder=${sortOrder}`;
+    const newRatingUrl = `${Urls.venuesUrl}/${Urls.queryParamUrl}&sort=${sortBy}&sortOrder=${sortOrder}`;
     setRatingUrl(newRatingUrl);
     setIsOpen(false);
     const sortString = `${sortBy}, ${sortOrder}`;
@@ -33,8 +33,6 @@ const VenueSection = () => {
       default:
         setDynamicHeader("Latest Venues");
     }
-
-    console.log(sortBy, sortOrder, newRatingUrl);
   }, [location]);
 
   return (

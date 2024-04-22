@@ -3,8 +3,8 @@ import { IoPaw } from "react-icons/io5";
 import { FaParking } from "react-icons/fa";
 import { MdFoodBank } from "react-icons/md";
 import { Link } from "react-router-dom";
-import CustomButton from "../Button";
-import TruncateTitle from "../TruncateTitle";
+import CustomButton from "../../Button";
+import TruncateTitle from "../../TruncateTitle";
 
 const CardLink = ({ data }) => {
   const { media, name, location, rating, meta, price } = data;
