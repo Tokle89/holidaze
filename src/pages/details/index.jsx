@@ -8,7 +8,7 @@ const DetailedVenue = () => {
   const id = params.id;
   const { data, isLoading, isError } = useFetch(`${Urls.venuesUrl}/${id}${Urls.queryParamUrl}`);
 
-  return <main className="my-10">{data.data && <DetailedCard data={data.data} />}</main>;
+  return <main className="my-10 px-5">{data.data && <DetailedCard data={data.data} />}</main>;
 };
 
 export default DetailedVenue;

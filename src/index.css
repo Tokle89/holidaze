@@ -33,3 +33,17 @@
     object-fit: cover;
   }
 }
+
+/* custom styles for the BookingCalendar component*/
+.react-datepicker__current-month,
+.react-datepicker__header,
+.react-datepicker__day-names,
+.react-datepicker__day-name {
+  background-color: #1378d1;
+  color: #ffffff;
+}
+
+.react-datepicker {
+  border: 1px solid #1378d1 !important;
+  border-radius: 6px;
+}
