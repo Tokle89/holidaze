@@ -5,9 +5,13 @@ import { MdMenu } from "react-icons/md";
 import { IoClose } from "react-icons/io5";
 import { useState } from "react";
 import MobileNav from "../MobileNav";
+import AuthForm from "../AuthForm";
 
 const Header = () => {
   const [showMenu, setShowMenu] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [authMode, setAuthMode] = useState(false);
+
   return (
     <header className=" z-50   relative inset-0 bg-primary p-3.5 ">
       <div className="   max-w-7xl text-secondary flex  items-center justify-between m-auto">
@@ -18,8 +22,24 @@ const Header = () => {
           </div>
         </div>
         <div className="hidden lg:block">
-          <CustomButton className="bg-secondary rounded-none text-primary border-secondary rounded-l hover:text-secondary hover:bg-primary">Login</CustomButton>
-          <CustomButton className="  bg-primary  rounded-none text-secondary  border-secondary rounded-r   hover:text-primary hover:bg-secondary">Register</CustomButton>
+          <CustomButton
+            onClick={() => {
+              setAuthMode(true);
+              setShowModal(true);
+            }}
+            className="bg-secondary rounded-none text-primary border-secondary rounded-l hover:text-secondary hover:bg-primary"
+          >
+            Login
+          </CustomButton>
+          <CustomButton
+            onClick={() => {
+              setAuthMode(false);
+              setShowModal(true);
+            }}
+            className="  bg-primary  rounded-none text-secondary  border-secondary rounded-r   hover:text-primary hover:bg-secondary"
+          >
+            Register
+          </CustomButton>
         </div>
         <div className=" lg:hidden hamburger-icon relative cursor-pointer" onClick={() => setShowMenu((prev) => !prev)}>
           <div className={`hamburger ${showMenu ? "hidden" : "block"}`}>
@@ -32,6 +52,7 @@ const Header = () => {
         </div>
       </div>
       {showMenu && <MobileNav />}
+      {showModal && <AuthForm mode={authMode} close={() => setShowModal(false)} />}
     </header>
   );
 };
