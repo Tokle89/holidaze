@@ -52,7 +52,7 @@ const Header = () => {
         </div>
       </div>
       {showMenu && <MobileNav />}
-      {showModal && <AuthForm mode={authMode} close={() => setShowModal(false)} />}
+      {showModal && <AuthForm mode={authMode} setMode={setAuthMode} close={() => setShowModal(false)} />}
     </header>
   );
 };

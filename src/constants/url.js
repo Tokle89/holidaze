@@ -6,9 +6,9 @@ const Urls = {
   venuesUrl: `${holidazeUrl}/venues`,
   queryParamUrl: `?_bookings=true&_owner=true`,
   bookingsUrl: `${holidazeUrl}/bookings`,
-  registerUrl: `${BaseUrl}/auth/register`,
-  loginUrl: `${BaseUrl}/auth/login`,
-  apiKeyUrl: `${BaseUrl}/auth/create-api-key`,
+  registerUrl: `${BaseUrl}auth/register`,
+  loginUrl: `${BaseUrl}auth/login`,
+  apiKeyUrl: `${BaseUrl}auth/create-api-key`,
 };
 
 export default Urls;
