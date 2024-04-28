@@ -12,7 +12,7 @@ const CardLink = ({ data }) => {
   return (
     <Card className="w-full max-w-[26rem] shadow-lg h-[480px] flex flex-col m-auto">
       <CardHeader floated={false} color="blue-gray" className="min-h-[205px]">
-        <img src={media[0].url} alt={name} className="h-[205px] w-full" />
+        <img src={media[0] ? media[0].url : `https://example.com/default-image.jpg`} alt={name} className="h-[205px] w-full" />
         <div className="to-bg-black-10 absolute inset-0 h-full w-full bg-gradient-to-tr from-transparent via-transparent to-black/60 " />
       </CardHeader>
       <CardBody className="flex-1 py-5 pt-5 pb-0">
