@@ -60,10 +60,9 @@ const AuthForm = ({ close, mode, setMode }) => {
       setSuccessMessage(true);
       reset();
     } else if (response && mode) {
-      console.log(response);
-      console.log("Login successful");
       localStorage.setItem("user", JSON.stringify(response.data));
-      navigate("/profile");
+      const userName = response.data.name;
+      navigate("/profile/" + userName);
       close();
     } else if (error) {
       console.log(error);
