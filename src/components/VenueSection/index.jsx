@@ -8,7 +8,7 @@ const VenueSection = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [dynamicHeader, setDynamicHeader] = useState("Latest Venues");
   const location = useLocation();
-  const [ratingUrl, setRatingUrl] = useState(Urls.venuesUrl + Urls.queryParamUrl);
+  const [ratingUrl, setRatingUrl] = useState(Urls.venuesUrl + Urls.venueQueryParamUrl);
 
   const { data, isLoading, isError } = useFetch(ratingUrl);
 
@@ -16,7 +16,7 @@ const VenueSection = () => {
     const hashParams = new URLSearchParams(location.hash.split("?")[1]);
     const sortBy = hashParams.get("sort") || "created";
     const sortOrder = hashParams.get("sortOrder") || "desc";
-    const newRatingUrl = `${Urls.venuesUrl}/${Urls.queryParamUrl}&sort=${sortBy}&sortOrder=${sortOrder}`;
+    const newRatingUrl = `${Urls.venuesUrl}/${Urls.venueQueryParamUrl}&sort=${sortBy}&sortOrder=${sortOrder}`;
     setRatingUrl(newRatingUrl);
     setIsOpen(false);
     const sortString = `${sortBy}, ${sortOrder}`;

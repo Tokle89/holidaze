@@ -8,8 +8,9 @@ const Urls = {
   registerUrl: `${BaseUrl}auth/register`,
   loginUrl: `${BaseUrl}auth/login`,
   apiKeyUrl: `${BaseUrl}auth/create-api-key`,
-  queryParamUrl: `?_bookings=true&_owner=true`,
-  profileQueryParamUrl: `?_bookings=true&_venues=true`,
+  profileQueryParamUrl: `?_venues=true&_bookings=true`,
+  venueQueryParamUrl: `?_owner=true&_bookings=true`,
+  bookingQueryParamUrl: `?_venue=true&_customer=true`,
 };
 
 export default Urls;

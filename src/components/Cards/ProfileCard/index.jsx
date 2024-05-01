@@ -1,7 +1,6 @@
 const ProfileCard = ({ data: { name, avatar, email, venueManager } }) => {
-  console.log(name, avatar);
   return (
-    <div className="min-w-[300px]  flex justify-between p-5 gap-10 items-center">
+    <div className=" max-w-[350px] flex justify-between p-5 gap-10 items-center ">
       <div>
         <img src={avatar.url} alt={name} className="rounded-full w-[80px] h-[80px]" />
       </div>

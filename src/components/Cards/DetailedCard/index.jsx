@@ -6,20 +6,35 @@ import { Tooltip } from "@material-tailwind/react";
 import BookingCalendar from "../../Calendar";
 import { useState, useEffect } from "react";
 import CustomButton from "../../Button";
+import { Link } from "react-router-dom";
+import ProfileCard from "../ProfileCard";
 
-const DetailedCard = (data) => {
+const DetailedCard = ({ data, type }) => {
   console.log(data);
-  const { media, name, location, maxGuests, meta, description, bookings, price } = data.data;
+  const { media, name, location, maxGuests, meta, description, bookings, price, owner } = type === "booking" ? data.venue : data;
   const { wifi, parking, breakfast, pets } = meta;
   const [guests, setGuests] = useState(1);
   const [bookedDates, setBookedDates] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
 
+  const [dateFrom, setDateFrom] = useState(null);
+  const [dateTo, setDateTo] = useState(null);
+
+  useEffect(() => {
+    if (type === "booking" && data) {
+      setDateFrom(new Date(data.dateFrom));
+      setDateTo(new Date(data.dateTo));
+      setBookedDates([new Date(data.dateFrom), new Date(data.dateTo)]);
+      setGuests(data.guests);
+    }
+  }, [data, type]);
+
   useEffect(() => {
     if (bookedDates[0] && bookedDates[1]) {
-      setTotalPrice(Math.ceil((bookedDates[1] - bookedDates[0]) / (1000 * 60 * 60 * 24)) * price);
+      const numberOfDays = Math.ceil((bookedDates[1] - bookedDates[0]) / (1000 * 60 * 60 * 24));
+      setTotalPrice(numberOfDays * price * guests);
     }
-  }, [bookedDates, guests, price]);
+  }, [bookedDates, price, guests]);
 
   return (
     <div className="max-w-7xl m-auto ">
@@ -79,13 +94,18 @@ const DetailedCard = (data) => {
             <h2 className="text-2xl">Description:</h2>
             <p className="text-gray-800">{description}</p>
           </div>
+          <h2 className="text-2xl mt-10">Hosted by:</h2>
+          <Link to={`/profile/${owner.name}`} className="shadow-md hover:shadow-lg p-5 inline-block">
+            <ProfileCard data={owner} />
+          </Link>
         </div>
         <div className="space-y-5 w-full md:max-w-[400px] mt-5 shadow-md p-10">
           <h3 className="text-center mb-5 text-tertiary">Select your dates</h3>
 
           <div className="flex justify-center">
             <BookingCalendar
-              bookings={bookings}
+              bookings={bookings || []}
+              selectedDates={dateFrom && dateTo ? [dateFrom, dateTo] : []}
               onDateChange={(start, end) => {
                 setBookedDates([start, end]);
               }}
@@ -97,6 +117,7 @@ const DetailedCard = (data) => {
           </p>
           <div className="relative h-10 w-full min-w-[200px]">
             <select
+              value={guests ? guests : 1}
               className="peer h-full w-full rounded-[7px] border border-blue-gray-200 border-t-transparent bg-transparent px-3 py-2.5 font-sans text-base font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 empty:!bg-gray-900 focus:border-2 focus:border-gray-900 focus:border-t-transparent focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
               onChange={(number) => {
                 setGuests(number.target.value);

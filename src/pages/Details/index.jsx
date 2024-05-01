@@ -6,7 +6,7 @@ import DetailedCard from "../../components/Cards/DetailedCard";
 const DetailedVenue = () => {
   let params = useParams();
   const id = params.id;
-  const { data, isLoading, isError } = useFetch(`${Urls.venuesUrl}/${id}${Urls.queryParamUrl}`);
+  const { data, isLoading, isError } = useFetch(`${Urls.venuesUrl}/${id}${Urls.venueQueryParamUrl}`);
 
   return (
     <main className="my-10 px-5">

@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import CustomButton from "../../Button";
 import TruncateTitle from "../../TruncateTitle";
 
-const CardLink = ({ data }) => {
+const CardLink = ({ data, onClick }) => {
   const { media, name, location, rating, meta, price } = data;
   const { wifi, parking, breakfast, pets } = meta;
   return (
@@ -78,9 +78,15 @@ const CardLink = ({ data }) => {
         </div>
       </CardBody>
       <CardFooter className="pt-4 mt-auto">
-        <Link to={`/venue/${data.id}`}>
-          <CustomButton className="w-full bg-tertiary text-white border-tertiary hover:bg-white hover:text-tertiary">View venue</CustomButton>
-        </Link>
+        {onClick ? (
+          <CustomButton onClick={onClick} className="w-full bg-tertiary text-white border-tertiary hover:bg-white hover:text-tertiary">
+            View venue
+          </CustomButton>
+        ) : (
+          <Link to={`/venue/${data.id}`}>
+            <CustomButton className="w-full bg-tertiary text-white border-tertiary hover:bg-white hover:text-tertiary">View venue</CustomButton>
+          </Link>
+        )}
       </CardFooter>
     </Card>
   );
