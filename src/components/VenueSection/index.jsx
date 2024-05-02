@@ -43,7 +43,7 @@ const VenueSection = () => {
           Sort By:
         </button>
         {isOpen && (
-          <div className="absolute left-0 mt-1 w-48 bg-tertiary text-white rounded shadow-lg z-10 ">
+          <ul className="absolute left-0 mt-1 w-48 bg-tertiary text-white rounded shadow-lg z-10 ">
             <li>
               <Link to={`/#venues?sort=created&sortOrder=desc`} className="py-2  block w-full px-4 hover:bg-primary cursor-pointer">
                 Latest
@@ -64,7 +64,7 @@ const VenueSection = () => {
                 Price low-high
               </Link>
             </li>
-          </div>
+          </ul>
         )}
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
