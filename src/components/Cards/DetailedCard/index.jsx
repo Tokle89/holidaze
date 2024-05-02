@@ -8,6 +8,8 @@ import { useState, useEffect } from "react";
 import CustomButton from "../../Button";
 import { Link } from "react-router-dom";
 import ProfileCard from "../ProfileCard";
+import { useAuth } from "../../AuthHandler";
+import LoginButton from "../../AuthButtons/loginBtn";
 
 const DetailedCard = ({ data, type }) => {
   console.log(data);
@@ -19,6 +21,8 @@ const DetailedCard = ({ data, type }) => {
 
   const [dateFrom, setDateFrom] = useState(null);
   const [dateTo, setDateTo] = useState(null);
+
+  const { loggedIn } = useAuth();
 
   useEffect(() => {
     if (type === "booking" && data) {
@@ -150,9 +154,9 @@ const DetailedCard = ({ data, type }) => {
                 </div>
               </div>
             </div>
-            <div className="flex justify-between pt-10 items-end">
+            <div className={`flex flex-col items-center space-y-3 pt-10 items-end `}>
               <p className="text-2xl">Total: {totalPrice}kr</p>
-              <CustomButton className={"text-white bg-tertiary border-tertiary hover:text-tertiary hover:bg-white"}>Book </CustomButton>
+              {loggedIn ? <CustomButton className={`text-white bg-tertiary border-tertiary hover:text-tertiary hover:bg-white w-full `}>Book</CustomButton> : <LoginButton />}
             </div>
           </div>
         </div>

@@ -1,26 +1,24 @@
 import Logo from "../Logo";
 import Nav from "../Navigation";
-import CustomButton from "../Button";
 import { MdMenu } from "react-icons/md";
 import { IoClose } from "react-icons/io5";
 import { useState, useEffect } from "react";
 import MobileNav from "../MobileNav";
-import AuthForm from "../AuthForm";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../AuthHandler";
+import LoginButton from "../AuthButtons/loginBtn";
+import RegisterButton from "../AuthButtons/RegisterBtn";
 
 const Header = () => {
   const [showMenu, setShowMenu] = useState(false);
-  const [showModal, setShowModal] = useState(false);
-  const [authMode, setAuthMode] = useState(false);
-  const [loggedIn, setLoggedIn] = useState(false);
   const [name, setName] = useState("");
   const [url, setUrl] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+  let navigate = useNavigate();
+  const { loggedIn, setLoggedIn } = useAuth();
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
     if (user) {
-      setLoggedIn(true);
-      console.log(user);
       const {
         name,
         avatar: { url },
@@ -33,6 +31,7 @@ const Header = () => {
   const handleLogout = () => {
     localStorage.removeItem("user");
     setLoggedIn(false);
+    navigate("/");
   };
   return (
     <header className=" z-50   relative inset-0 bg-primary p-3.5 ">
@@ -88,24 +87,8 @@ const Header = () => {
           </div>
         ) : (
           <div className="hidden lg:block">
-            <CustomButton
-              onClick={() => {
-                setAuthMode(true);
-                setShowModal(true);
-              }}
-              className="bg-secondary rounded-none text-primary border-secondary rounded-l hover:text-secondary hover:bg-primary"
-            >
-              Login
-            </CustomButton>
-            <CustomButton
-              onClick={() => {
-                setAuthMode(false);
-                setShowModal(true);
-              }}
-              className="  bg-primary  rounded-none text-secondary  border-secondary rounded-r   hover:text-primary hover:bg-secondary"
-            >
-              Register
-            </CustomButton>
+            <LoginButton />
+            <RegisterButton />
           </div>
         )}
         <div className=" lg:hidden hamburger-icon relative cursor-pointer" onClick={() => setShowMenu((prev) => !prev)}>
@@ -119,7 +102,6 @@ const Header = () => {
         </div>
       </div>
       {showMenu && <MobileNav />}
-      {showModal && <AuthForm mode={authMode} setMode={setAuthMode} close={() => setShowModal(false)} />}
     </header>
   );
 };

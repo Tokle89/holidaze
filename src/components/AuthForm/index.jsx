@@ -6,15 +6,17 @@ import Urls from "../../constants/url";
 import { useEffect, useState } from "react";
 import useLazyFetch from "../../hooks/useLazyFetch";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../AuthHandler";
 
-const AuthForm = ({ close, mode, setMode }) => {
-  const [authUrl, setAuthUrl] = useState(mode ? Urls.loginUrl : Urls.registerUrl);
+const AuthForm = () => {
+  const { authMode, setAuthMode, setShowModal } = useAuth();
+  const [authUrl, setAuthUrl] = useState(authMode ? Urls.loginUrl : Urls.registerUrl);
   const [successMessage, setSuccessMessage] = useState(false);
   const { response, error, doFetch } = useLazyFetch();
   const navigate = useNavigate();
 
   const schema = yup.object({
-    name: mode
+    name: authMode
       ? yup.string()
       : yup
           .string()
@@ -22,7 +24,7 @@ const AuthForm = ({ close, mode, setMode }) => {
           .required("Name is required"),
     email: yup.string().email().matches("stud.noroff.no", "Email must be a valid stud.noroff.no email").required("Email is required"),
     password: yup.string().min(8, "Password must be at least 8 characters").required("Password is required"),
-    avatar: mode ? yup.string() : yup.string().url("Avatar must be a valid URL"),
+    avatar: authMode ? yup.string() : yup.string().url("Avatar must be a valid URL"),
   });
 
   const {
@@ -35,7 +37,7 @@ const AuthForm = ({ close, mode, setMode }) => {
   });
 
   const onSubmit = (data) => {
-    if (!mode) {
+    if (!authMode) {
       data.avatar = { url: data.avatar };
     }
     const fetchOptions = {
@@ -50,16 +52,16 @@ const AuthForm = ({ close, mode, setMode }) => {
   };
 
   useEffect(() => {
-    setAuthUrl(mode ? Urls.loginUrl : Urls.registerUrl);
-  }, [mode]);
+    setAuthUrl(authMode ? Urls.loginUrl : Urls.registerUrl);
+  }, [authMode]);
 
   useEffect(() => {
-    if (response && !mode) {
+    if (response && !authMode) {
       console.log(response);
-      setMode(true);
+      setAuthMode(true);
       setSuccessMessage(true);
       reset();
-    } else if (response && mode) {
+    } else if (response && authMode) {
       localStorage.setItem("user", JSON.stringify(response.data));
       const userName = response.data.name;
       navigate("/profile/" + userName);
@@ -73,7 +75,7 @@ const AuthForm = ({ close, mode, setMode }) => {
     <div className=" fixed inset-0 z-[1000] grid h-screen w-screen place-items-center bg-black bg-opacity-60 backdrop-blur-sm transition-opacity duration-300">
       <div className="relative p-4  md:min-w-[400px]  rounded-lg bg-white font-sans text-base font-light leading-relaxed antialiased shadow-2xl">
         <div className="  text-right text-blue-gray-500">
-          <button onClick={close} className="  font-sans text-2xl font-bold text-red-500 uppercase transition-all rounded-lg middle none center hover:bg-red-500/10 active:bg-red-500/30 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
+          <button onClick={() => setShowModal(false)} className="  font-sans text-2xl font-bold text-red-500 uppercase transition-all rounded-lg middle none center hover:bg-red-500/10 active:bg-red-500/30 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
             x
           </button>
         </div>
@@ -85,13 +87,13 @@ const AuthForm = ({ close, mode, setMode }) => {
             </div>
           ) : (
             <div className="flex flex-col items-center">
-              <h4 className="block font-sans text-2xl antialiased font-semibold leading-snug tracking-normal ">{mode ? `Login` : `Register`}</h4>
-              <p className="block mt-1 font-sans text-base antialiased font-normal leading-relaxed"> Please enter your details to {mode ? `login` : `register`}.</p>
+              <h4 className="block font-sans text-2xl antialiased font-semibold leading-snug tracking-normal ">{authMode ? `Login` : `Register`}</h4>
+              <p className="block mt-1 font-sans text-base antialiased font-normal leading-relaxed"> Please enter your details to {authMode ? `login` : `register`}.</p>
             </div>
           )}
         </div>
         <form onSubmit={handleSubmit(onSubmit)} className="  mt-8 mb-2 space-y-6  ">
-          {!mode && (
+          {!authMode && (
             <div>
               <h6 className="block mb-3  font-sans  antialiased font-semibold leading-relaxed tracking-normal text-tertiary ">Your user name</h6>
               <p className=" text-red-700 font-medium">{errors.name?.message}</p>
@@ -115,7 +117,7 @@ const AuthForm = ({ close, mode, setMode }) => {
               />
             </div>
           </div>
-          {!mode && (
+          {!authMode && (
             <div>
               <h6 className="block mb-3  font-sans text-base antialiased font-semibold leading-relaxed tracking-normal text-tertiary ">Your profile avatar</h6>
               <p className="font-medium text-red-700">{errors.avatar?.message}</p>
@@ -139,7 +141,7 @@ const AuthForm = ({ close, mode, setMode }) => {
               />
             </div>
           </div>
-          {!mode && (
+          {!authMode && (
             <div>
               <h6 className="block mb-3  font-sans text-base antialiased font-semibold leading-relaxed tracking-normal text-tertiary ">Register as a host</h6>
               <div className="inline-flex items-center">
@@ -156,7 +158,7 @@ const AuthForm = ({ close, mode, setMode }) => {
             </div>
           )}
           <CustomButton type="submit" className={"w-full text-white bg-tertiary border border-tertiary hover:text-tertiary hover:bg-white"}>
-            {mode ? `Login` : `Register`}
+            {authMode ? `Login` : `Register`}
           </CustomButton>
         </form>
       </div>
