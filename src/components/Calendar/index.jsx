@@ -29,10 +29,12 @@ const BookingCalendar = ({ bookings, onDateChange, selectedDates }) => {
     const [start, end] = dates;
     setStartDate(start);
     setEndDate(end);
-    onDateChange(start, end);
+    if (start && end) {
+      onDateChange(start, end);
+    }
   };
 
-  return <DatePicker selected={startDate} onChange={onChange} startDate={startDate} endDate={endDate} excludeDates={excludeDates} selectsRange selectsDisabledDaysInRange inline />;
+  return <DatePicker selected={startDate} onChange={onChange} startDate={startDate} endDate={endDate} excludeDates={excludeDates} selectsRange inline />;
 };
 
 export default BookingCalendar;

@@ -11,34 +11,49 @@ import ProfileCard from "../ProfileCard";
 import { useAuth } from "../../AuthHandler";
 import LoginButton from "../../AuthButtons/loginBtn";
 
-const DetailedCard = ({ data, type }) => {
-  console.log(data);
-  const { media, name, location, maxGuests, meta, description, bookings, price, owner } = type === "booking" ? data.venue : data;
+const DetailedCard = ({ data, type, onBookingClick }) => {
+  const { media, name, location, maxGuests, meta, description, bookings, price, owner, id } = type === "booking" ? data.venue : data;
   const { wifi, parking, breakfast, pets } = meta;
   const [guests, setGuests] = useState(1);
-  const [bookedDates, setBookedDates] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
-
   const [dateFrom, setDateFrom] = useState(null);
   const [dateTo, setDateTo] = useState(null);
-
   const { loggedIn } = useAuth();
-
+  const { accessToken } = JSON.parse(localStorage.getItem("user"));
+  const apiKey = import.meta.env.VITE_API_KEY;
   useEffect(() => {
     if (type === "booking" && data) {
       setDateFrom(new Date(data.dateFrom));
       setDateTo(new Date(data.dateTo));
-      setBookedDates([new Date(data.dateFrom), new Date(data.dateTo)]);
       setGuests(data.guests);
     }
   }, [data, type]);
 
   useEffect(() => {
-    if (bookedDates[0] && bookedDates[1]) {
-      const numberOfDays = Math.ceil((bookedDates[1] - bookedDates[0]) / (1000 * 60 * 60 * 24));
+    if (dateFrom && dateTo) {
+      const numberOfDays = Math.ceil((dateTo - dateFrom) / (1000 * 60 * 60 * 24));
       setTotalPrice(numberOfDays * price * guests);
     }
-  }, [bookedDates, price, guests]);
+  }, [dateFrom, dateTo, price, guests]);
+
+  const handleBookingClick = () => {
+    const fetchOptions = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+        "x-Noroff-API-key": apiKey,
+      },
+      body: JSON.stringify({
+        dateFrom: dateFrom.toISOString(),
+        dateTo: dateTo.toISOString(),
+        guests: guests,
+        venueId: id,
+      }),
+    };
+
+    onBookingClick(fetchOptions);
+  };
 
   return (
     <div className="max-w-7xl m-auto ">
@@ -109,9 +124,10 @@ const DetailedCard = ({ data, type }) => {
           <div className="flex justify-center">
             <BookingCalendar
               bookings={bookings || []}
-              selectedDates={dateFrom && dateTo ? [dateFrom, dateTo] : []}
+              selectedDates={[dateFrom, dateTo]}
               onDateChange={(start, end) => {
-                setBookedDates([start, end]);
+                setDateFrom(start);
+                setDateTo(end);
               }}
             />
           </div>
@@ -144,19 +160,25 @@ const DetailedCard = ({ data, type }) => {
               <div className="space-y-2">
                 <p>From:</p>
                 <div className="border p-4 border-secondary bg-secondary text-primary">
-                  <p>{bookedDates.length > 0 ? bookedDates[0].toLocaleDateString("en-GB", { day: "2-digit", month: "2-digit", year: "numeric" }) : "Select a date"}</p>
+                  <p>{dateFrom ? dateFrom.toLocaleDateString("en-GB", { day: "2-digit", month: "2-digit", year: "numeric" }) : "Select a date"}</p>
                 </div>
               </div>
               <div className="space-y-2">
                 <p>To:</p>
                 <div className="border p-4 border-secondary bg-secondary text-primary">
-                  <p>{bookedDates.length > 1 && bookedDates[1] ? bookedDates[1].toLocaleDateString("en-GB", { day: "2-digit", month: "2-digit", year: "numeric" }) : "Select a date"}</p>
+                  <p>{dateTo ? dateTo.toLocaleDateString("en-GB", { day: "2-digit", month: "2-digit", year: "numeric" }) : "Select a date"}</p>
                 </div>
               </div>
             </div>
             <div className={`flex flex-col items-center space-y-3 pt-10 items-end `}>
               <p className="text-2xl">Total: {totalPrice}kr</p>
-              {loggedIn ? <CustomButton className={`text-white bg-tertiary border-tertiary hover:text-tertiary hover:bg-white w-full `}>Book</CustomButton> : <LoginButton />}
+              {loggedIn ? (
+                <CustomButton onClick={() => handleBookingClick()} className={`text-white bg-tertiary border-tertiary hover:text-tertiary hover:bg-white w-full `}>
+                  Book
+                </CustomButton>
+              ) : (
+                <LoginButton className={`border-tertiary bg-tertiary text-white hover:bg-white hover:text-tertiary w-full`}>Login to book</LoginButton>
+              )}
             </div>
           </div>
         </div>

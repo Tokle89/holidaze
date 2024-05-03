@@ -87,8 +87,8 @@ const Header = () => {
           </div>
         ) : (
           <div className="hidden lg:block">
-            <LoginButton />
-            <RegisterButton />
+            <LoginButton className={`border-secondary bg-secondary text-primary hover:text-secondary hover:bg-primary rounded-none rounded-l `} />
+            <RegisterButton className={`border-secondary bg-primary text-secondary rounded-none rounded-r hover:bg-secondary hover:text-primary`} />
           </div>
         )}
         <div className=" lg:hidden hamburger-icon relative cursor-pointer" onClick={() => setShowMenu((prev) => !prev)}>
