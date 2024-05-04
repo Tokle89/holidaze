@@ -1,5 +1,5 @@
 import CustomButton from "../../Button";
-const BookingAndVenueCard = ({
+const BookingCard = ({
   data: {
     dateFrom,
     dateTo,
@@ -34,4 +34,4 @@ const BookingAndVenueCard = ({
   );
 };
 
-export default BookingAndVenueCard;
+export default BookingCard;

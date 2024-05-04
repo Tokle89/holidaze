@@ -1,19 +1,16 @@
-import { useParams } from "react-router-dom";
+import { useParams, Outlet } from "react-router-dom";
 import useFetch from "../../hooks/useFetch";
+import useLazyFetch from "../../hooks/useLazyFetch";
 import Urls from "../../constants/url";
-import { useMemo } from "react";
+import { useMemo, useEffect, useState } from "react";
 import ProfileCard from "../../components/Cards/ProfileCard";
 import CustomButton from "../../components/Button";
-import UserBookingsAndVenues from "../../components/UserBookingsAndVenues";
-import { useState } from "react";
-import useLazyFetch from "../../hooks/useLazyFetch";
-import DetailedCard from "../../components/Cards/DetailedCard";
+import { DataContext } from "../../utils/DataContexts";
+
 const ProfilePage = () => {
-  const [selectedType, setSelectedType] = useState(null);
-  const [selectedTypeSet, setSelectedTypeSet] = useState(false);
   const params = useParams();
-  const id = params.id;
-  const profileUrl = `${Urls.profileUrl}/${id}${Urls.profileQueryParamUrl}`;
+  const { userName, view, id } = params;
+  const profileUrl = `${Urls.profileUrl}/${userName}${Urls.profileQueryParamUrl}`;
   const apiKey = import.meta.env.VITE_API_KEY;
   const { accessToken } = JSON.parse(localStorage.getItem("user"));
   const fetchOptions = useMemo(
@@ -31,27 +28,28 @@ const ProfilePage = () => {
   const { data, isLoading: profileLoading, isError: profileError } = useFetch(profileUrl, fetchOptions);
   const { response, IsLoading: venueLoading, IsError: venueError, doFetch } = useLazyFetch();
 
-  const handleVenueAndBookingClick = (id, type) => {
-    let url;
-    if (type === "booking") {
-      url = `${Urls.bookingsUrl}/${id}${Urls.bookingQueryParamUrl}`;
-    } else if (type === "venue") {
-      url = `${Urls.venuesUrl}/${id}${Urls.venueQueryParamUrl}`;
-    }
+  const [url, setUrl] = useState();
 
+  useEffect(() => {
+    if (view === "bookings" && id) {
+      console.log("view bookings");
+      setUrl(`${Urls.bookingsUrl}/${id}${Urls.bookingQueryParamUrl}`);
+    } else if (view === "venues" && id) {
+      setUrl(`${Urls.venuesUrl}/${id}${Urls.venueQueryParamUrl}`);
+      console.log("view venues");
+    }
+  }, [view, id]);
+
+  useEffect(() => {
     if (url) {
-      setSelectedType(type);
-      setSelectedTypeSet(true);
       doFetch(url, fetchOptions);
-      console.log(response);
     }
-  };
+  }, [url]);
 
-  // ...
-
+  console.log(data);
   return (
     <main className=" my-12 px-5">
-      {data.data && (
+      {data && data.data && (
         <div>
           <div className="max-w-[350px] mx-auto">
             <ProfileCard data={data.data} />
@@ -60,16 +58,7 @@ const ProfilePage = () => {
               <CustomButton className={"border border-tertiary bg-tertiary text-white hover:bg-white hover:text-tertiary w-full"}> Create</CustomButton>
             </div>
           </div>
-          {selectedType === null ? (
-            <UserBookingsAndVenues data={data.data} onVenueOrBookingClick={handleVenueAndBookingClick} />
-          ) : venueLoading ? (
-            <div>Loading...</div>
-          ) : venueError ? (
-            <div>Error: {venueError.message}</div>
-          ) : (
-            selectedTypeSet && response && <DetailedCard data={response.data} type={selectedType} />
-            // <UserBookingsAndVenues data={data.data} onVenueOrBookingClick={handleVenueAndBookingClick} />
-          )}
+          <DataContext.Provider value={{ data: data.data, response, view, userName, venueLoading, venueError }}>{(!id || (id && response)) && <Outlet />}</DataContext.Provider>
         </div>
       )}
     </main>
