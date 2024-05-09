@@ -1,36 +1,32 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
-const useLazyFetch = (initialUrl = "", initialOptions = {}) => {
-  const [url, setUrl] = useState(initialUrl);
-  const [options, setOptions] = useState(initialOptions);
+const useLazyFetch = () => {
   const [response, setResponse] = useState(null);
-  const [error, setError] = useState(null);
+  const [isError, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const doFetch = (url, options) => {
-    setUrl(url);
-    setOptions(options);
+  const doFetch = async (url, options) => {
     setIsLoading(true);
-  };
-
-  useEffect(() => {
-    if (!url) return;
-
-    const fetchData = async () => {
-      try {
-        const res = await fetch(url, options);
+    try {
+      const res = await fetch(url, options);
+      if (!res.ok) {
+        console.log("res", res);
+      }
+      if (res.status === 204) {
+        console.log("Delete successful");
+        setResponse({ message: "Delete successful" });
+      } else {
         const json = await res.json();
+        console.log("json", json);
         setResponse(json);
         setIsLoading(false);
-      } catch (error) {
-        setError(error);
       }
-    };
-
-    fetchData();
-  }, [url, options]);
-
-  return { response, error, isLoading, doFetch };
+    } catch (error) {
+      console.error("Fetch error:", error);
+      setError(error);
+    }
+  };
+  return { response, isError, isLoading, doFetch };
 };
 
 export default useLazyFetch;

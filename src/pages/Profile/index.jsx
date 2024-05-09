@@ -46,7 +46,6 @@ const ProfilePage = () => {
     }
   }, [url]);
 
-  console.log(data);
   return (
     <main className=" my-12 px-5">
       {data && data.data && (

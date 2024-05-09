@@ -11,7 +11,7 @@ const VenueSection = () => {
   const [ratingUrl, setRatingUrl] = useState(Urls.venuesUrl + Urls.venueQueryParamUrl);
 
   const { data, isLoading, isError } = useFetch(ratingUrl);
-
+  console.log(data, isLoading, isError);
   useEffect(() => {
     const hashParams = new URLSearchParams(location.hash.split("?")[1]);
     const sortBy = hashParams.get("sort") || "created";

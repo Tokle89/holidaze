@@ -1,13 +1,21 @@
 import CustomButton from "../../Button";
+import { Link } from "react-router-dom";
+
+import { useContext } from "react";
+import { DataContext } from "../../../utils/DataContexts";
+
 const BookingCard = ({
   data: {
     dateFrom,
     dateTo,
     guests,
+    id,
     venue: { name, location, media },
   },
-  onClick,
 }) => {
+  console.log(id);
+  const { userName } = useContext(DataContext);
+
   return (
     <div className="relative flex flex-col mt-6 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl w-full">
       <div className="relative h-56 mx-4 -mt-6 overflow-hidden text-white shadow-lg bg-clip-border rounded-xl bg-blue-gray-500 shadow-blue-gray-500/40">
@@ -26,9 +34,9 @@ const BookingCard = ({
         <p className="block font-sans text-base antialiased font-light leading-relaxed text-inherit">Guests: {guests}</p>
       </div>
       <div className="p-6 pt-0">
-        <CustomButton onClick={onClick} className="w-full bg-tertiary text-white hover:bg-white hover:text-tertiary border-tertiary">
-          View Venue
-        </CustomButton>
+        <Link to={`/profile/${userName}/bookings/${id}`}>
+          <CustomButton className="w-full bg-tertiary text-white hover:bg-white hover:text-tertiary border-tertiary">View Venue</CustomButton>
+        </Link>
       </div>
     </div>
   );

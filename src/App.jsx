@@ -6,22 +6,25 @@ import ProfilePage from "./pages/Profile";
 import UserBookingsAndVenues from "./components/UserBookingsAndVenues";
 import DetailedCard from "./components/Cards/DetailedCard";
 import { AuthProvider } from "./components/AuthHandler";
+import { MessageProvider } from "./components/Message/MessageProvider";
 
 const App = () => {
   return (
     <>
       <AuthProvider>
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<Home />} />
-            <Route path="venue/:id" element={<DetailedVenue />} />
-            <Route path="/profile/:userName" element={<ProfilePage />}>
-              <Route index element={<UserBookingsAndVenues />} />
-              <Route path=":view" element={<UserBookingsAndVenues />} />
-              <Route path=":view/:bookingId" element={<DetailedCard />} />
+        <MessageProvider>
+          <Routes>
+            <Route path="/" element={<Layout />}>
+              <Route index element={<Home />} />
+              <Route path="venue/:id" element={<DetailedVenue />} />
+              <Route path="/profile/:userName" element={<ProfilePage />}>
+                <Route index element={<UserBookingsAndVenues />} />
+                <Route path=":view" element={<UserBookingsAndVenues />} />
+                <Route path=":view/:id" element={<DetailedCard />} />
+              </Route>
             </Route>
-          </Route>
-        </Routes>
+          </Routes>
+        </MessageProvider>
       </AuthProvider>
     </>
   );
