@@ -40,11 +40,11 @@ const DetailedCard = () => {
     setOptions(options);
   }, [pathname, id]);
 
-  const { data, isLoading, isError } = useFetch(url, options);
+  const { data = {}, isLoading, isError } = useFetch(url, options);
   const { response, isLoading: loading, isError: error, doFetch } = useLazyFetch();
   const { media, name, location, maxGuests, meta, description, bookings, price, owner } = data.data?.venue || data.data || {};
-  const { wifi, parking, breakfast, pets } = meta || {};
 
+  const { wifi, parking, breakfast, pets } = meta || {};
   useEffect(() => {
     if (pageState === "booking" && data.data) {
       setDateFrom(new Date(data.data.dateFrom));
