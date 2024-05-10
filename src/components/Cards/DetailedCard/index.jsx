@@ -27,6 +27,7 @@ const DetailedCard = () => {
   const [options, setOptions] = useState(null);
   const [pageState, setPageState] = useState(null);
   const [action, setAction] = useState(null);
+  const [bookingChange, setBookingChange] = useState(false);
   const { loggedIn } = useAuth();
   const { accessToken, name: userName } = JSON.parse(localStorage.getItem("user"));
   const apiKey = import.meta.env.VITE_API_KEY;
@@ -57,6 +58,13 @@ const DetailedCard = () => {
 
   const handleBookingClick = (url, method, body) => {
     handleBooking(url, method, body, setAction, doFetch, accessToken, apiKey);
+    console.log(method);
+    setTimeout(() => {
+      if (method === "PUT") {
+        setBookingChange((prevState) => prevState + 1);
+        console.log("working");
+      }
+    }, 1500);
   };
 
   useResponseHandler(response, action, id);

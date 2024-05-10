@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import { useContext } from "react";
 import MessageContext from "../utils/MessageContexts";
 import { useNavigate } from "react-router-dom";
-import { set } from "date-fns";
 
 const useResponseHandler = (response, action, id) => {
   const { showMessage, hideMessage } = useContext(MessageContext);
@@ -24,16 +23,16 @@ const useResponseHandler = (response, action, id) => {
             break;
           case "PUT":
             showMessage("success", "Booking updated");
-
-            navigate(`/profile/${userName}/bookings/${id}`);
-
+            setTimeout(() => {
+              hideMessage();
+            }, 1000);
             break;
           case "DELETE":
             showMessage("success", "Booking cancelled");
             setTimeout(() => {
               navigate(`/profile/${userName}`);
               hideMessage();
-            }, 1500);
+            }, 2000);
         }
       }
     }
