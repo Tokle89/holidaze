@@ -9,48 +9,40 @@ import CustomButton from "../../Button";
 import ProfileCard from "../ProfileCard";
 import { useAuth } from "../../AuthHandler";
 import LoginButton from "../../AuthButtons/loginBtn";
-import { useLocation, useParams, Link } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import Urls from "../../../constants/url";
 import useLazyFetch from "../../../hooks/useLazyFetch";
-import useFetch from "../../../hooks/useFetch";
-import pathHandler from "../../../utils/pathHandler";
 import useResponseHandler from "../../../hooks/useResponseHandler";
 import UsePriceCalculator from "../../../hooks/usePriceCalculator";
 import handleBooking from "../../../utils/handleBooking";
 
-const DetailedCard = () => {
-  const { pathname } = useLocation();
+const DetailedCard = ({ data, setTriggerFetch }) => {
   const [guests, setGuests] = useState(1);
   const [dateFrom, setDateFrom] = useState(null);
   const [dateTo, setDateTo] = useState(null);
-  const [url, setUrl] = useState(null);
-  const [options, setOptions] = useState(null);
   const [pageState, setPageState] = useState(null);
   const [action, setAction] = useState(null);
-  const [bookingChange, setBookingChange] = useState(false);
   const { loggedIn } = useAuth();
-  const { accessToken, name: userName } = JSON.parse(localStorage.getItem("user"));
+  const { accessToken } = JSON.parse(localStorage.getItem("user"));
   const apiKey = import.meta.env.VITE_API_KEY;
 
-  let { id } = useParams();
-
+  let { id, view } = useParams();
+  console.log(data);
   useEffect(() => {
-    const { url, options, pageState } = pathHandler(pathname, id, userName, accessToken, apiKey);
-    setPageState(pageState);
-    setUrl(url);
-    setOptions(options);
-  }, [pathname, id]);
+    if (view === "bookings" && id) {
+      setPageState("bookings");
+    }
+  }, [view, id]);
 
-  const { data = {}, isLoading, isError } = useFetch(url, options);
-  const { response, isLoading: loading, isError: error, doFetch } = useLazyFetch();
-  const { media, name, location, maxGuests, meta, description, bookings, price, owner } = data.data?.venue || data.data || {};
+  const { response, doFetch } = useLazyFetch();
+  const { media, name, location, maxGuests, meta, description, bookings, price, owner } = data?.venue || data || {};
 
   const { wifi, parking, breakfast, pets } = meta || {};
   useEffect(() => {
-    if (pageState === "booking" && data.data) {
-      setDateFrom(new Date(data.data.dateFrom));
-      setDateTo(new Date(data.data.dateTo));
-      setGuests(data.data.guests);
+    if (pageState === "bookings" && data) {
+      setDateFrom(new Date(data.dateFrom));
+      setDateTo(new Date(data.dateTo));
+      setGuests(data.guests);
     }
   }, [data, bookings]);
 
@@ -58,22 +50,15 @@ const DetailedCard = () => {
 
   const handleBookingClick = (url, method, body) => {
     handleBooking(url, method, body, setAction, doFetch, accessToken, apiKey);
-    console.log(method);
-    setTimeout(() => {
-      if (method === "PUT") {
-        setBookingChange((prevState) => prevState + 1);
-        console.log("working");
-      }
-    }, 1500);
+    console.log(method, body, url);
   };
+  console.log(response);
+  useResponseHandler(response, action, setTriggerFetch);
 
-  useResponseHandler(response, action, id);
-
+  console.log(pageState);
   return (
     <>
-      {isLoading && <p>loading</p>}
-
-      {data && data.data && (
+      {data && (
         <div className="max-w-7xl m-auto ">
           <Carousel>
             {media.map((image) => (
@@ -82,13 +67,13 @@ const DetailedCard = () => {
           </Carousel>
           <div className=" flex flex-col  justify-center md:flex-row md:justify-between gap-10 ">
             <div className="space-y-4 mt-4  w-full md:w-4/5">
-              {pageState === "booking" && (
+              {pageState === "bookings" && (
                 <div className="border-2 border-tertiary p-5 space-y-3">
                   <h3 className="text-tertiary text-xl">
-                    Booking ID: <span className="text-gray-700"> {data.data.id}</span>
+                    Booking ID: <span className="text-gray-700"> {data.id}</span>
                   </h3>
-                  <p className="text-gray-800">Booked by: {data.data.customer.email}</p>
-                  <p className="text-gray-800">Booked on: {new Date(data.data.created).toLocaleDateString()}</p>
+                  <p className="text-gray-800">Booked by: {data.customer.email}</p>
+                  <p className="text-gray-800">Booked on: {new Date(data.created).toLocaleDateString()}</p>
                   <div className=" w-full border-tertiary border"></div>
                   <div className="text-gray-800 space-y-3">
                     <p className="text-tertiary text-xl ">Booking details:</p>
@@ -97,11 +82,11 @@ const DetailedCard = () => {
                       {location.address}, {location.city}, {location.country}
                     </p>
                     <div className="flex gap-10">
-                      <p>From: {new Date(data.data.dateFrom).toLocaleDateString()}</p>
-                      <p>To: {new Date(data.data.dateTo).toLocaleDateString()}</p>
+                      <p>From: {new Date(data.dateFrom).toLocaleDateString()}</p>
+                      <p>To: {new Date(data.dateTo).toLocaleDateString()}</p>
                     </div>
-                    <p>Guests: {data.data.guests}</p>
-                    <p>Total: {price}kr</p>
+                    <p>Guests: {data.guests}</p>
+                    <p>Total: {totalPrice}kr</p>
                   </div>
                   <div className=" w-full border-tertiary border"></div>
                   <div className="space-y-3 text-gray-800">
@@ -228,7 +213,7 @@ const DetailedCard = () => {
                 <div className={`flex flex-col items-center space-y-3 pt-10 items-end `}>
                   <p className="text-2xl">Total: {totalPrice}kr</p>
                   {loggedIn ? (
-                    pageState === "booking" ? (
+                    pageState === "bookings" ? (
                       <CustomButton
                         onClick={() => handleBookingClick(`${Urls.bookingsUrl}/${id}`, "PUT", JSON.stringify({ dateFrom: dateFrom.toISOString(), dateTo: dateTo.toISOString(), guests: guests }))}
                         className={`text-white bg-tertiary border-tertiary hover:text-tertiary hover:bg-white w-full `}

@@ -3,12 +3,8 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import CardLink from "../Cards/Card";
 import BookingCard from "../Cards/ProfileBookingCard";
-import { DataContext } from "../../utils/DataContexts";
-import { useContext } from "react";
 
-const UserBookingsAndVenues = () => {
-  const { data, view, userName } = useContext(DataContext);
-
+const UserBookingsAndVenues = ({ data, view, userName }) => {
   const { bookings, venues } = data;
   const [activeButton, setActiveButton] = useState(true);
   useEffect(() => {
@@ -41,7 +37,7 @@ const UserBookingsAndVenues = () => {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10 my-5 ">
               {bookings.map((booking) => (
-                <BookingCard data={booking} key={booking.id} />
+                <BookingCard data={booking} key={booking.id} userName={userName} />
               ))}
             </div>
           )}

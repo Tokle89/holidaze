@@ -1,18 +1,22 @@
-import { useParams, Outlet } from "react-router-dom";
-import useFetch from "../../hooks/useFetch";
+import { useParams } from "react-router-dom";
 import useLazyFetch from "../../hooks/useLazyFetch";
 import Urls from "../../constants/url";
 import { useMemo, useEffect, useState } from "react";
 import ProfileCard from "../../components/Cards/ProfileCard";
 import CustomButton from "../../components/Button";
-import { DataContext } from "../../utils/DataContexts";
+import UserBookingsAndVenues from "../../components/UserBookingsAndVenues";
+import DetailedCard from "../../components/Cards/DetailedCard";
+import VenueForm from "../../components/VenueForm";
 
 const ProfilePage = () => {
+  const [toggleForm, setToggleForm] = useState(false);
+  const [url, setUrl] = useState();
   const params = useParams();
   const { userName, view, id } = params;
   const profileUrl = `${Urls.profileUrl}/${userName}${Urls.profileQueryParamUrl}`;
   const apiKey = import.meta.env.VITE_API_KEY;
   const { accessToken } = JSON.parse(localStorage.getItem("user"));
+  const [triggerFetch, setTriggerFetch] = useState(false);
   const fetchOptions = useMemo(
     () => ({
       method: "GET",
@@ -25,10 +29,12 @@ const ProfilePage = () => {
     [accessToken, apiKey]
   );
 
-  const { data, isLoading: profileLoading, isError: profileError } = useFetch(profileUrl, fetchOptions);
-  const { response, IsLoading: venueLoading, IsError: venueError, doFetch } = useLazyFetch();
+  const { response: profileData, isLoading: profileLoading, isError: profileError, doFetch: fetchProfile } = useLazyFetch();
+  const { response: detailedData, isLoading: detailedLoading, isError: detailedError, doFetch: fetchDetailed } = useLazyFetch();
 
-  const [url, setUrl] = useState();
+  useEffect(() => {
+    fetchProfile(profileUrl, fetchOptions);
+  }, [profileUrl, fetchOptions]);
 
   useEffect(() => {
     if (view === "bookings" && id) {
@@ -42,22 +48,32 @@ const ProfilePage = () => {
 
   useEffect(() => {
     if (url) {
-      doFetch(url, fetchOptions);
+      if (id) {
+        fetchDetailed(url, fetchOptions);
+      } else {
+        fetchProfile(profileUrl, fetchOptions);
+      }
     }
-  }, [url]);
-
+  }, [url, triggerFetch]);
   return (
     <main className=" my-12 px-5">
-      {data && data.data && (
+      {toggleForm && <VenueForm setToggleForm={setToggleForm} />}
+      {profileData && profileData.data && (
         <div>
           <div className="max-w-[350px] mx-auto">
-            <ProfileCard data={data.data} />
+            <ProfileCard data={profileData.data} />
             <div className="text-primary my-10">
-              <h2 className="text-center mb-3">Create a new venue:</h2>
-              <CustomButton className={"border border-tertiary bg-tertiary text-white hover:bg-white hover:text-tertiary w-full"}> Create</CustomButton>
+              {!id && (
+                <>
+                  <h2 className="text-center mb-3">Create a new venue:</h2>
+                  <CustomButton onClick={() => setToggleForm(true)} className={"border border-tertiary bg-tertiary text-white hover:bg-white hover:text-tertiary w-full"}>
+                    Create
+                  </CustomButton>
+                </>
+              )}
             </div>
           </div>
-          <DataContext.Provider value={{ data: data.data, response, view, userName, venueLoading, venueError }}>{(!id || (id && response)) && <Outlet />}</DataContext.Provider>
+          {detailedData && detailedData.data && id ? <DetailedCard data={detailedData.data} setTriggerFetch={setTriggerFetch} /> : <UserBookingsAndVenues data={profileData.data} view={view} userName={userName} setTriggerFetch={setTriggerFetch} />}
         </div>
       )}
     </main>

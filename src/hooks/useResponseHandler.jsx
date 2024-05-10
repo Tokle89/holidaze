@@ -3,7 +3,7 @@ import { useContext } from "react";
 import MessageContext from "../utils/MessageContexts";
 import { useNavigate } from "react-router-dom";
 
-const useResponseHandler = (response, action, id) => {
+const useResponseHandler = (response, action, setTriggerFetch) => {
   const { showMessage, hideMessage } = useContext(MessageContext);
   const { name: userName } = JSON.parse(localStorage.getItem("user"));
   const navigate = useNavigate();
@@ -24,6 +24,7 @@ const useResponseHandler = (response, action, id) => {
           case "PUT":
             showMessage("success", "Booking updated");
             setTimeout(() => {
+              setTriggerFetch(new Date().getTime());
               hideMessage();
             }, 1000);
             break;
@@ -31,6 +32,7 @@ const useResponseHandler = (response, action, id) => {
             showMessage("success", "Booking cancelled");
             setTimeout(() => {
               navigate(`/profile/${userName}`);
+              setTriggerFetch(new Date().getTime());
               hideMessage();
             }, 2000);
         }

@@ -21,3 +21,5 @@ const pathHandler = (pathname, id, userName, accessToken, apiKey) => {
 };
 
 export default pathHandler;
+
+//currently not using this file, but it is a good example of how to handle different paths in a react app
