@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import useLazyFetch from "../../hooks/useLazyFetch";
 import Urls from "../../constants/url";
 import { useMemo, useEffect, useState } from "react";
@@ -6,10 +6,8 @@ import ProfileCard from "../../components/Cards/ProfileCard";
 import CustomButton from "../../components/Button";
 import UserBookingsAndVenues from "../../components/UserBookingsAndVenues";
 import DetailedCard from "../../components/Cards/DetailedCard";
-import VenueForm from "../../components/VenueForm";
 
 const ProfilePage = () => {
-  const [toggleForm, setToggleForm] = useState(false);
   const [url, setUrl] = useState();
   const params = useParams();
   const { userName, view, id } = params;
@@ -57,7 +55,6 @@ const ProfilePage = () => {
   }, [url, triggerFetch]);
   return (
     <main className=" my-12 px-5">
-      {toggleForm && <VenueForm setToggleForm={setToggleForm} />}
       {profileData && profileData.data && (
         <div>
           <div className="max-w-[350px] mx-auto">
@@ -66,9 +63,9 @@ const ProfilePage = () => {
               {!id && (
                 <>
                   <h2 className="text-center mb-3">Create a new venue:</h2>
-                  <CustomButton onClick={() => setToggleForm(true)} className={"border border-tertiary bg-tertiary text-white hover:bg-white hover:text-tertiary w-full"}>
-                    Create
-                  </CustomButton>
+                  <Link to="/venueForm">
+                    <CustomButton className={"border border-tertiary bg-tertiary text-white hover:bg-white hover:text-tertiary w-full"}>Create</CustomButton>
+                  </Link>
                 </>
               )}
             </div>

@@ -7,6 +7,7 @@ import UserBookingsAndVenues from "./components/UserBookingsAndVenues";
 import DetailedCard from "./components/Cards/DetailedCard";
 import { AuthProvider } from "./components/AuthHandler";
 import { MessageProvider } from "./components/Message/MessageProvider";
+import VenueForm from "./components/VenueForm";
 
 const App = () => {
   return (
@@ -22,6 +23,7 @@ const App = () => {
                 <Route path=":view" element={<UserBookingsAndVenues />} />
                 <Route path=":view/:id" element={<DetailedCard />} />
               </Route>
+              <Route path="venueForm" element={<VenueForm />} />
             </Route>
           </Routes>
         </MessageProvider>
