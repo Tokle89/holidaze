@@ -3,10 +3,14 @@ import { useForm, useFieldArray } from "react-hook-form";
 import { useState } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import executeSubmit from "../../utils/handleSubmit";
+import Urls from "../../constants/url";
+import useLazyFetch from "../../hooks/useLazyFetch";
+import useResponseHandler from "../../hooks/useResponseHandler";
 const VenueForm = () => {
   const [step, setStep] = useState(1);
   const progressWidthClasses = ["w-1/4", "w-2/4", "w-3/4", "w-full"];
-
+  const { response, doFetch } = useLazyFetch();
   const schema = yup.object({
     name: yup.string().min(3).required(`Name is required`),
     description: yup.string().min(3).required(`Description is required`),
@@ -36,9 +40,12 @@ const VenueForm = () => {
       })
       .required(`Rating is required`),
 
-    address: yup.string().min(3).required(`Address is required`),
-    city: yup.string().min(3).required(`City is required`),
-    country: yup.string().min(3).required(`Country is required`),
+    location: yup.object({
+      address: yup.string().required("Address is required"),
+      city: yup.string().required("City is required"),
+      zipCode: yup.string().required("Zip code is required"),
+      country: yup.string().required("Country is required"),
+    }),
   });
   const {
     register,
@@ -58,7 +65,7 @@ const VenueForm = () => {
       meta: {
         wifi: false,
         parking: false,
-        breakfast: false,
+        breakFast: false,
         pets: false,
       },
       location: {
@@ -77,15 +84,10 @@ const VenueForm = () => {
 
   const watchAllFields = watch();
 
-  const onSubmit = (data) => {
-    data.media = data.media.filter((media) => media.url !== "");
-
-    console.log(data);
-  };
   const FieldsPerStep = [
     [`name`, `description`, `media`, `price`, `maxGuests`],
     [`rating`, `wifi`, `pets`, `breakFast`, `parking`],
-    [`address`, `city`, `zipCode`, `country`],
+    [`location.address`, `location.city`, `location.zipCode`, `location.country`],
   ];
 
   const nextStep = async () => {
@@ -99,6 +101,14 @@ const VenueForm = () => {
     setStep(step - 1);
   };
 
+  const onSubmit = (data) => {
+    data.media = data.media.filter((media) => media.url !== "");
+    console.log("data", data);
+
+    executeSubmit(Urls.venuesUrl, `POST`, data, doFetch);
+  };
+
+  useResponseHandler(response, "venue", "POST");
   return (
     <main className="m-auto my-10">
       <div className=" w-full md:min-w-[600px]">
@@ -120,7 +130,6 @@ const VenueForm = () => {
                 <div className="relative h-11 w-full min-w-[200px]">
                   <input
                     {...register(`name`)}
-                    defaultValue={watchAllFields.name}
                     placeholder="Name of your venue"
                     className="peer h-full w-full rounded-md border border-tertiary   bg-transparent px-3 py-3 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:tertiary placeholder-shown:tertiary focus:border-2 focus:border-primary   focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
                   />
@@ -132,7 +141,6 @@ const VenueForm = () => {
                 <div className="relative min-h-[80px] w-full min-w-[200px]">
                   <textarea
                     {...register(`description`)}
-                    defaultValue={watchAllFields.description}
                     placeholder="Description of your venue"
                     className="peer min-h-[80px] w-full rounded-md border border-tertiary   bg-transparent px-3 py-3 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:tertiary placeholder-shown:tertiary focus:border-2 focus:border-primary   focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
                   />
@@ -151,7 +159,6 @@ const VenueForm = () => {
                     <p className=" text-red-700 font-medium mb-1">{errors.media && errors.media[index] && errors.media[index].url && errors.media[index].url.message}</p>
                     <input
                       {...register(`media.${index}.url`)}
-                      defaultValue={watchAllFields.media[index]?.url}
                       placeholder="Url link to venue image"
                       className="peer h-full w-full rounded-md border border-tertiary bg-transparent px-3 py-3 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:tertiary placeholder-shown:tertiary focus:border-2 focus:border-primary focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
                     />
@@ -261,10 +268,10 @@ const VenueForm = () => {
             <>
               <div>
                 <h6 className="block mb-2  font-sans text-base antialiased font-semibold leading-relaxed tracking-normal text-tertiary "> Street address</h6>
-                <p className=" text-red-700 font-medium mb-1">{errors.address?.message}</p>
+                <p className=" text-red-700 font-medium mb-1">{errors.location?.address.message}</p>
                 <div className="relative h-11 w-full min-w-[200px]">
                   <input
-                    {...register(`address`)}
+                    {...register(`location.address`)}
                     placeholder="Street address"
                     className="peer h-full w-full rounded-md border border-tertiary   bg-transparent px-3 py-3 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:tertiary placeholder-shown:tertiary focus:border-2 focus:border-primary   focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
                   />
@@ -272,10 +279,10 @@ const VenueForm = () => {
               </div>
               <div>
                 <h6 className="block mb-2  font-sans text-base antialiased font-semibold leading-relaxed tracking-normal text-tertiary "> City</h6>
-                <p className=" text-red-700 font-medium mb-1">{errors.city?.message}</p>
+                <p className=" text-red-700 font-medium mb-1">{errors.location?.city.message}</p>
                 <div className="relative h-11 w-full min-w-[200px]">
                   <input
-                    {...register(`city`)}
+                    {...register(`location.city`)}
                     placeholder="City"
                     className="peer h-full w-full rounded-md border border-tertiary   bg-transparent px-3 py-3 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:tertiary placeholder-shown:tertiary focus:border-2 focus:border-primary   focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
                   />
@@ -285,7 +292,7 @@ const VenueForm = () => {
                 <h6 className="block mb-2  font-sans text-base antialiased font-semibold leading-relaxed tracking-normal text-tertiary "> Zip code</h6>
                 <div className="relative h-11 w-full min-w-[200px]">
                   <input
-                    {...register(`zipCode`)}
+                    {...register(`location.zipCode`)}
                     placeholder="Zip code"
                     className="peer h-full w-full rounded-md border border-tertiary   bg-transparent px-3 py-3 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:tertiary placeholder-shown:tertiary focus:border-2 focus:border-primary   focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
                   />
@@ -293,10 +300,10 @@ const VenueForm = () => {
               </div>
               <div>
                 <h6 className="block mb-2  font-sans text-base antialiased font-semibold leading-relaxed tracking-normal text-tertiary "> Country</h6>
-                <p className=" text-red-700 font-medium mb-1">{errors.country?.message}</p>
+                <p className=" text-red-700 font-medium mb-1">{errors.location?.country.message}</p>
                 <div className="relative h-11 w-full min-w-[200px]">
                   <input
-                    {...register(`country`)}
+                    {...register(`location.country`)}
                     placeholder="Country"
                     className="peer h-full w-full rounded-md border border-tertiary   bg-transparent px-3 py-3 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:tertiary placeholder-shown:tertiary focus:border-2 focus:border-primary   focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
                   />
@@ -321,19 +328,87 @@ const VenueForm = () => {
             </div>
           )}
           {step === 4 && (
-            <div className="flex gap-20 justify-between">
-              <CustomButton
-                onClick={() => {
-                  if (step > 1) prevStep();
-                }}
-                className={`w-[150px] md:w-1/4 text-white bg-tertiary border border-tertiary hover:text-tertiary hover:bg-white ${step === 1 && `bg-blue-300 border-blue-300`} `}
-              >
-                Previous
-              </CustomButton>
-              <CustomButton type="submit" className={" w-[150px] md:w-1/4 text-white bg-tertiary border border-tertiary hover:text-tertiary hover:bg-white"}>
-                submit
-              </CustomButton>
-            </div>
+            <>
+              <div className="border border-tertiary p-5">
+                <h4 className="block font-sans text-2xl antialiased font-semibold leading-snug tracking-normal ">Review your venue</h4>
+                <div className="flex flex-col gap-2">
+                  <div>
+                    <h6 className="block mb-2  font-sans text-base antialiased font-semibold leading-relaxed tracking-normal text-tertiary ">Name </h6>
+                    <p className=" text-blue-gray-500">{watchAllFields.name}</p>
+                  </div>
+                  <div>
+                    <h6 className="block mb-2  font-sans text-base antialiased font-semibold leading-relaxed tracking-normal text-tertiary ">Description </h6>
+                    <p className=" text-blue-gray-500">{watchAllFields.description}</p>
+                  </div>
+                  <div>
+                    <h6 className="block mb-2  font-sans text-base antialiased font-semibold leading-relaxed tracking-normal text-tertiary ">Venue images Url`S` </h6>
+                    {watchAllFields.media.map((media, index) => (
+                      <p key={index} className=" text-blue-gray-500">
+                        {media.url}
+                      </p>
+                    ))}
+                  </div>
+                  <div>
+                    <h6 className="block mb-2  font-sans text-base antialiased font-semibold leading-relaxed tracking-normal text-tertiary ">Price per night</h6>
+                    <p className=" text-blue-gray-500">{watchAllFields.price}</p>
+                  </div>
+                  <div>
+                    <h6 className="block mb-2  font-sans text-base antialiased font-semibold leading-relaxed tracking-normal text-tertiary ">Maximum number of guests </h6>
+                    <p className=" text-blue-gray-500">{watchAllFields.maxGuests}</p>
+                  </div>
+                  <div>
+                    <h6 className="block mb-2  font-sans text-base antialiased font-semibold leading-relaxed tracking-normal text-tertiary ">Rating ( from 0 to 5)</h6>
+                    <p className=" text-blue-gray-500">{watchAllFields.rating}</p>
+                  </div>
+                  <div>
+                    <h6 className="block mb-2  font-sans text-base antialiased font-semibold leading-relaxed tracking-normal text-tertiary ">Wifi</h6>
+                    <p className=" text-blue-gray-500">{watchAllFields.meta.wifi ? `Yes` : `No`}</p>
+                  </div>
+                  <div>
+                    <h6 className="block mb-2  font-sans text-base antialiased font-semibold leading-relaxed tracking-normal text-tertiary ">Parking</h6>
+                    <p className=" text-blue-gray-500">{watchAllFields.meta.parking ? `Yes` : `No`}</p>
+                  </div>
+                  <div>
+                    <h6 className="block mb-2  font-sans text-base antialiased font-semibold leading-relaxed tracking-normal text-tertiary ">breakFast</h6>
+                    <p className=" text-blue-gray-500">{watchAllFields.meta.breakFast ? `Yes` : `No`}</p>
+                  </div>
+                  <div>
+                    <h6 className="block mb-2  font-sans text-base antialiased font-semibold leading-relaxed tracking-normal text-tertiary ">pets</h6>
+                    <p className=" text-blue-gray-500">{watchAllFields.meta.pets ? `Yes` : `No`}</p>
+                  </div>
+                  <div>
+                    <h6 className="block mb-2  font-sans text-base antialiased font-semibold leading-relaxed tracking-normal text-tertiary "> Street address</h6>
+                    <p className=" text-blue-gray-500">{watchAllFields.location.address}</p>
+                  </div>
+                  <div>
+                    <h6 className="block mb-2  font-sans text-base antialiased font-semibold leading-relaxed tracking-normal text-tertiary "> City</h6>
+                    <p className=" text-blue-gray-500">{watchAllFields.location.city}</p>
+                  </div>
+                  <div>
+                    <h6 className="block mb-2  font-sans text-base antialiased font-semibold leading-relaxed tracking-normal text-tertiary "> Zip code</h6>
+                    <p className=" text-blue-gray-500">{watchAllFields.location.zipCode}</p>
+                  </div>
+                  <div>
+                    <h6 className="block mb-2  font-sans text-base antialiased font-semibold leading-relaxed tracking-normal text-tertiary "> Country</h6>
+                    <p className=" text-blue-gray-500">{watchAllFields.location.country}</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex gap-20 justify-between">
+                <CustomButton
+                  onClick={() => {
+                    if (step > 1) prevStep();
+                  }}
+                  className={`w-[150px] md:w-1/4 text-white bg-tertiary border border-tertiary hover:text-tertiary hover:bg-white ${step === 1 && `bg-blue-300 border-blue-300`} `}
+                >
+                  Previous
+                </CustomButton>
+                <CustomButton type="submit" className={" w-[150px] md:w-1/4 text-white bg-tertiary border border-tertiary hover:text-tertiary hover:bg-white"}>
+                  submit
+                </CustomButton>
+              </div>
+            </>
           )}
         </form>
       </div>

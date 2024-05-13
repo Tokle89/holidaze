@@ -3,7 +3,7 @@ import { useContext } from "react";
 import MessageContext from "../utils/MessageContexts";
 import { useNavigate } from "react-router-dom";
 
-const useResponseHandler = (response, action, setTriggerFetch) => {
+const useResponseHandler = (response, actionType, action, setTriggerFetch) => {
   const { showMessage, hideMessage } = useContext(MessageContext);
   const { name: userName } = JSON.parse(localStorage.getItem("user"));
   const navigate = useNavigate();
@@ -13,32 +13,48 @@ const useResponseHandler = (response, action, setTriggerFetch) => {
       if (response.errors) {
         showMessage("error", `${response.errors[0].message}`);
       } else {
-        switch (action) {
-          case "POST":
-            showMessage("success", "Booking successful");
-            navigate(`/profile/${userName}/bookings/${response.data.id}`);
-            setTimeout(() => {
-              hideMessage();
-            }, 1000);
+        switch (actionType) {
+          case "booking":
+            switch (action) {
+              case "POST":
+                showMessage("success", "Booking successful");
+                navigate(`/profile/${userName}/bookings/${response.data.id}`);
+                setTimeout(() => {
+                  hideMessage();
+                }, 1000);
+                break;
+              case "PUT":
+                showMessage("success", "Booking updated");
+                setTimeout(() => {
+                  setTriggerFetch(new Date().getTime());
+                  hideMessage();
+                }, 1000);
+                break;
+              case "DELETE":
+                showMessage("success", "Booking cancelled");
+                setTimeout(() => {
+                  navigate(`/profile/${userName}`);
+                  setTriggerFetch(new Date().getTime());
+                  hideMessage();
+                }, 2000);
+                break;
+            }
             break;
-          case "PUT":
-            showMessage("success", "Booking updated");
-            setTimeout(() => {
-              setTriggerFetch(new Date().getTime());
-              hideMessage();
-            }, 1000);
+          case "venue":
+            switch (action) {
+              case "POST":
+                showMessage("success", "Venue added");
+                setTimeout(() => {
+                  navigate(`/profile/${userName}/venues/${response.data.id}`);
+                  hideMessage();
+                }, 1000);
+                break;
+            }
             break;
-          case "DELETE":
-            showMessage("success", "Booking cancelled");
-            setTimeout(() => {
-              navigate(`/profile/${userName}`);
-              setTriggerFetch(new Date().getTime());
-              hideMessage();
-            }, 2000);
         }
       }
     }
-  }, [response, action]);
+  }, [response, action, actionType]);
 };
 
 export default useResponseHandler;

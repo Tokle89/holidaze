@@ -52,10 +52,9 @@ const DetailedCard = ({ data, setTriggerFetch }) => {
     handleBooking(url, method, body, setAction, doFetch, accessToken, apiKey);
     console.log(method, body, url);
   };
-  console.log(response);
-  useResponseHandler(response, action, setTriggerFetch);
 
-  console.log(pageState);
+  useResponseHandler(response, "booking", action, setTriggerFetch);
+
   return (
     <>
       {data && (
