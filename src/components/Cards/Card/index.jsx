@@ -5,10 +5,13 @@ import { MdFoodBank } from "react-icons/md";
 import { Link } from "react-router-dom";
 import CustomButton from "../../Button";
 import TruncateTitle from "../../TruncateTitle";
+import { useParams } from "react-router-dom";
 
-const CardLink = ({ data, onClick }) => {
+const CardLink = ({ data }) => {
   const { media, name, location, rating, meta, price } = data;
   const { wifi, parking, breakfast, pets } = meta;
+  const { userName, view } = useParams();
+  console.log(view, userName);
   return (
     <Card className="w-full max-w-[26rem] shadow-lg h-[480px] flex flex-col m-auto">
       <CardHeader floated={false} color="blue-gray" className="min-h-[205px]">
@@ -78,10 +81,10 @@ const CardLink = ({ data, onClick }) => {
         </div>
       </CardBody>
       <CardFooter className="pt-4 mt-auto">
-        {onClick ? (
-          <CustomButton onClick={onClick} className="w-full bg-tertiary text-white border-tertiary hover:bg-white hover:text-tertiary">
-            View venue
-          </CustomButton>
+        {view === `venues` ? (
+          <Link to={`/profile/${userName}/venues/${data.id}`}>
+            <CustomButton className="w-full bg-tertiary text-white border-tertiary hover:bg-white hover:text-tertiary">View venue</CustomButton>
+          </Link>
         ) : (
           <Link to={`/venue/${data.id}`}>
             <CustomButton className="w-full bg-tertiary text-white border-tertiary hover:bg-white hover:text-tertiary">View venue</CustomButton>

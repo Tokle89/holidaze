@@ -36,11 +36,9 @@ const ProfilePage = () => {
 
   useEffect(() => {
     if (view === "bookings" && id) {
-      console.log("view bookings");
       setUrl(`${Urls.bookingsUrl}/${id}${Urls.bookingQueryParamUrl}`);
     } else if (view === "venues" && id) {
       setUrl(`${Urls.venuesUrl}/${id}${Urls.venueQueryParamUrl}`);
-      console.log("view venues");
     }
   }, [view, id]);
 

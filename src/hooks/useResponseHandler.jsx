@@ -7,7 +7,7 @@ const useResponseHandler = (response, actionType, action, setTriggerFetch) => {
   const { showMessage, hideMessage } = useContext(MessageContext);
   const { name: userName } = JSON.parse(localStorage.getItem("user"));
   const navigate = useNavigate();
-
+  console.log(actionType, action);
   useEffect(() => {
     if (response) {
       if (response.errors) {
@@ -43,9 +43,24 @@ const useResponseHandler = (response, actionType, action, setTriggerFetch) => {
           case "venue":
             switch (action) {
               case "POST":
-                showMessage("success", "Venue added");
+                showMessage("success", "Venue created");
                 setTimeout(() => {
                   navigate(`/profile/${userName}/venues/${response.data.id}`);
+                  hideMessage();
+                }, 1000);
+                break;
+              case "PUT":
+                showMessage("success", "Venue updated");
+                setTimeout(() => {
+                  navigate(`/profile/${userName}/venues/${response.data.id}`);
+                  hideMessage();
+                }, 1000);
+                break;
+              case "DELETE":
+                showMessage("success", "Venue deleted");
+                setTimeout(() => {
+                  navigate(`/profile/${userName}/venues/`);
+                  setTriggerFetch(new Date().getTime());
                   hideMessage();
                 }, 1000);
                 break;

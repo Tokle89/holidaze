@@ -23,7 +23,7 @@ const App = () => {
                 <Route path=":view" element={<UserBookingsAndVenues />} />
                 <Route path=":view/:id" element={<DetailedCard />} />
               </Route>
-              <Route path="venueForm" element={<VenueForm />} />
+              <Route path="/venueForm" element={<VenueForm />} />
             </Route>
           </Routes>
         </MessageProvider>
