@@ -29,7 +29,7 @@ const Header = () => {
   };
   return (
     <header className=" z-50   relative inset-0 bg-primary p-3.5 ">
-      <div className="   max-w-7xl text-secondary flex  items-center justify-between m-auto">
+      <div className="   max-w-7xl text-white flex  items-center justify-between m-auto">
         <div className="flex gap-20 items-baseline">
           <Logo />
           <div className="hidden lg:block">

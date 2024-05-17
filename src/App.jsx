@@ -8,6 +8,7 @@ import DetailedCard from "./components/Cards/DetailedCard";
 import { AuthProvider } from "./components/AuthHandler";
 import { MessageProvider } from "./components/Message/MessageProvider";
 import VenueForm from "./components/VenueForm";
+import SearchPage from "./pages/Search";
 
 const App = () => {
   return (
@@ -24,6 +25,9 @@ const App = () => {
                 <Route path=":view/:id" element={<DetailedCard />} />
               </Route>
               <Route path="/venueForm" element={<VenueForm />} />
+              <Route path="/search" element={<SearchPage />}>
+                <Route path=":id" element={<SearchPage />} />
+              </Route>
             </Route>
           </Routes>
         </MessageProvider>
