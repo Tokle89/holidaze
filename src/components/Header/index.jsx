@@ -8,28 +8,22 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../AuthHandler";
 import LoginButton from "../AuthButtons/loginBtn";
 import RegisterButton from "../AuthButtons/RegisterBtn";
+import { IoIosSettings } from "react-icons/io";
 
 const Header = () => {
   const [showMenu, setShowMenu] = useState(false);
-  const [name, setName] = useState("");
-  const [url, setUrl] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   let navigate = useNavigate();
-  const { loggedIn, setLoggedIn } = useAuth();
+  const { loggedIn, setLoggedIn, setShowProfileForm } = useAuth();
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
+
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user"));
-    if (user) {
-      const {
-        name,
-        avatar: { url },
-      } = user;
-      setName(name);
-      setUrl(url);
-    }
+    setUser(JSON.parse(localStorage.getItem("user")));
   }, [loggedIn]);
 
   const handleLogout = () => {
     localStorage.removeItem("user");
+    setUser(null);
     setLoggedIn(false);
     navigate("/");
   };
@@ -46,12 +40,12 @@ const Header = () => {
           <div className="relative hidden lg:block ">
             {" "}
             <button onClick={() => setIsOpen(!isOpen)}>
-              <img src={url} alt={name} className="relative inline-block h-11 w-11 !rounded-full object-cover object-center border-2 border-white" />
+              <img src={user?.avatar?.url} alt={user?.name} className="relative inline-block h-11 w-11 !rounded-full object-cover object-center border-2 border-white" />
             </button>
             {isOpen && (
               <ul className="absolute bg-primary rounded text-white border-2 border-white  right-10 min-w-[200px]">
                 <Link
-                  to={`/profile/${name}`}
+                  to={`/profile/${user?.name}`}
                   onClick={() => setIsOpen(false)}
                   className="py-5 flex items-center w-full p-3 leading-tight transition-all rounded outline-none text-start hover:bg-blue-gray-50 hover:bg-opacity-80 hover:text-blue-gray-900 focus:bg-blue-gray-50 focus:bg-opacity-80 focus:text-blue-gray-900 active:bg-blue-gray-50 active:bg-opacity-80 active:text-blue-gray-900"
                 >
@@ -68,7 +62,23 @@ const Header = () => {
                 </Link>
                 <div
                   role="button"
-                  onClick={() => handleLogout()}
+                  onClick={() => {
+                    setShowProfileForm(true);
+                    setIsOpen(false);
+                  }}
+                  className="py-5 flex items-center w-full p-3 leading-tight transition-all rounded outline-none text-start hover:bg-blue-gray-50 hover:bg-opacity-80 hover:text-blue-gray-900 focus:bg-blue-gray-50 focus:bg-opacity-80 focus:text-blue-gray-900 active:bg-blue-gray-50 active:bg-opacity-80 active:text-blue-gray-900"
+                >
+                  <div className="grid mr-4 place-items-center">
+                    <IoIosSettings className="w-5 h-5" />
+                  </div>
+                  Edit Profile
+                </div>
+                <div
+                  role="button"
+                  onClick={() => {
+                    handleLogout();
+                    setIsOpen(false);
+                  }}
                   className="py-5 flex items-center w-full p-3 leading-tight transition-all rounded outline-none text-start hover:bg-blue-gray-50 hover:bg-opacity-80 hover:text-blue-gray-900 focus:bg-blue-gray-50 focus:bg-opacity-80 focus:text-blue-gray-900 active:bg-blue-gray-50 active:bg-opacity-80 active:text-blue-gray-900"
                 >
                   <div className="grid mr-4 place-items-center">

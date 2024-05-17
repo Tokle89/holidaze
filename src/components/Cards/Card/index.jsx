@@ -11,7 +11,7 @@ const CardLink = ({ data }) => {
   const { media, name, location, rating, meta, price } = data;
   const { wifi, parking, breakfast, pets } = meta;
   const { userName, view } = useParams();
-  console.log(view, userName);
+
   return (
     <Card className="w-full max-w-[26rem] shadow-lg h-[480px] flex flex-col m-auto">
       <CardHeader floated={false} color="blue-gray" className="min-h-[205px]">

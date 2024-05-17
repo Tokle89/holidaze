@@ -52,7 +52,7 @@ const ProfilePage = () => {
     }
   }, [url, triggerFetch]);
   return (
-    <main className=" my-12 px-5">
+    <main className=" my-12 px-5 w-full max-w-7xl mx-auto">
       {profileData && profileData.data && (
         <div>
           <div className="max-w-[350px] mx-auto">

@@ -8,14 +8,16 @@ const UserBookingsAndVenues = ({ data, view, userName }) => {
   const { bookings, venues } = data;
   const [activeButton, setActiveButton] = useState(true);
   useEffect(() => {
-    if (view || view === "bookings") {
+    if (view === "bookings") {
       setActiveButton(true);
     } else if (view === "venues") {
       setActiveButton(false);
     }
+
+    console.log(view, activeButton);
   }, [view]);
   return (
-    <div>
+    <div className="  ">
       <div className="flex ">
         <Link to={`/profile/${userName}/bookings`} className="w-full">
           <CustomButton className={`border rounded-none text-white hover:bg-white hover:text-tertiary w-full ${activeButton ? `border-primary bg-white text-primary` : `bg-primary border-primary`}`}>Your bookings</CustomButton>
@@ -35,7 +37,7 @@ const UserBookingsAndVenues = ({ data, view, userName }) => {
               </Link>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10 my-5 ">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-10 my-5 ">
               {bookings.map((booking) => (
                 <BookingCard data={booking} key={booking.id} userName={userName} />
               ))}
@@ -53,7 +55,7 @@ const UserBookingsAndVenues = ({ data, view, userName }) => {
               <CustomButton className="border border-tertiary bg-tertiary text-white hover:bg-white hover:text-tertiary ">Create</CustomButton>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 my-5">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-5 my-5">
               {" "}
               {venues.map((venue) => (
                 <CardLink data={venue} key={venue.id} />

@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../AuthHandler";
 
 const AuthForm = () => {
-  const { authMode, setAuthMode, setShowModal } = useAuth();
+  const { authMode, setAuthMode, setShowModal, setLoggedIn } = useAuth();
   const [authUrl, setAuthUrl] = useState(authMode ? Urls.loginUrl : Urls.registerUrl);
   const [successMessage, setSuccessMessage] = useState(false);
   const { response, error, doFetch } = useLazyFetch();
@@ -64,8 +64,9 @@ const AuthForm = () => {
     } else if (response && authMode) {
       localStorage.setItem("user", JSON.stringify(response.data));
       const userName = response.data.name;
+      setLoggedIn(true);
+      setShowModal(false);
       navigate("/profile/" + userName);
-      close();
     } else if (error) {
       console.log(error);
     }

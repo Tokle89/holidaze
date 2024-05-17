@@ -66,6 +66,18 @@ const useResponseHandler = (response, actionType, action, setTriggerFetch) => {
                 break;
             }
             break;
+          case "profile":
+            switch (action) {
+              case "PUT":
+                showMessage("success", "Profile updated");
+                setTimeout(() => {
+                  localStorage.setItem("user", JSON.stringify(response.data));
+                  navigate(`/profile/${userName}`);
+                  hideMessage();
+                }, 1000);
+                break;
+            }
+            break;
         }
       }
     }
