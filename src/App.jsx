@@ -9,6 +9,7 @@ import { AuthProvider } from "./components/AuthHandler";
 import { MessageProvider } from "./components/Message/MessageProvider";
 import VenueForm from "./components/VenueForm";
 import SearchPage from "./pages/Search";
+import HostPage from "./pages/Host";
 
 const App = () => {
   return (
@@ -28,6 +29,7 @@ const App = () => {
               <Route path="/search" element={<SearchPage />}>
                 <Route path=":id" element={<SearchPage />} />
               </Route>
+              <Route path="/host" element={<HostPage />} />
             </Route>
           </Routes>
         </MessageProvider>

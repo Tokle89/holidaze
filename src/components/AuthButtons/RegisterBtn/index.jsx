@@ -1,7 +1,7 @@
 import { useAuth } from "../../AuthHandler";
 import CustomButton from "../../Button";
 
-function RegisterButton() {
+function RegisterButton({ className }) {
   const { setAuthMode, setShowModal } = useAuth();
 
   return (
@@ -10,7 +10,7 @@ function RegisterButton() {
         setAuthMode(false);
         setShowModal(true);
       }}
-      className="bg-primary rounded-none text-secondary border-secondary rounded-r hover:text-primary hover:bg-secondary"
+      className={className}
     >
       Register
     </CustomButton>
