@@ -5,8 +5,8 @@ import Accordion from "../../components/Accordion";
 const HostPage = () => {
   const { setShowProfileForm } = useAuth();
   return (
-    <main className="my-10 px-5">
-      <div className="flex justify-between max-w-7xl mx-auto items-center">
+    <main className="my-20 px-5">
+      <div className="flex justify-between max-w-7xl mx-auto items-center ">
         <div className="flex-1 max-w-[750px] w-full space-y-5 text-gray-700">
           <h1 className=" font-bold text-primary">Ready to become a host ?</h1>
           <p className="text-lg ">Start earning while creating unforgettable experiences - sign up now to become a Holidaze host and turn your space into a lucrative adventure!</p>
@@ -33,7 +33,7 @@ const HostPage = () => {
           <img src={"/images/host.jpg"} alt="Small toy house and house keys" className="rounded-full w-full max-w-[300px] max-h-[300px]" />
         </div>
       </div>
-      <div className="flex justify-between max-w-7xl mx-auto items-center mt-20">
+      <div className="flex justify-between max-w-7xl mx-auto items-center my-20">
         <div>
           <h2 className="text-primary mb-5">Benefits of being a holidaze host:</h2>
           <ul className="text-gray-700 space-y-3">
@@ -51,8 +51,8 @@ const HostPage = () => {
           </ul>
         </div>
       </div>
-      <div className="flex justify-between max-w-7xl mx-auto items-center">
-        <div>
+      <div className="flex justify-between max-w-7xl mx-auto items-center ">
+        <div className="max-w-[600px] ">
           <h2 className="text-primary mb-5">Frequently asked questions:</h2>
           <Accordion />
         </div>
