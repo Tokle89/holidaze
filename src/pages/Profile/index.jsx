@@ -13,7 +13,7 @@ const ProfilePage = () => {
   const { userName, view, id } = params;
   const profileUrl = `${Urls.profileUrl}/${userName}${Urls.profileQueryParamUrl}`;
   const apiKey = import.meta.env.VITE_API_KEY;
-  const { accessToken } = JSON.parse(localStorage.getItem("user"));
+  const { accessToken, name } = JSON.parse(localStorage.getItem("user"));
   const [triggerFetch, setTriggerFetch] = useState(false);
   const fetchOptions = useMemo(
     () => ({
@@ -58,7 +58,7 @@ const ProfilePage = () => {
           <div className="max-w-[350px] mx-auto">
             <ProfileCard data={profileData.data} />
             <div className="text-primary my-10">
-              {!id && (
+              {name && name === userName && (
                 <>
                   <h2 className="text-center mb-3">Create a new venue:</h2>
                   <Link to="/venueForm">

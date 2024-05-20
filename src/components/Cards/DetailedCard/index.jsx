@@ -1,4 +1,3 @@
-import { Carousel } from "@material-tailwind/react";
 import { FaBed, FaParking } from "react-icons/fa";
 import { IoPaw } from "react-icons/io5";
 import { MdFoodBank } from "react-icons/md";
@@ -15,6 +14,8 @@ import useLazyFetch from "../../../hooks/useLazyFetch";
 import useResponseHandler from "../../../hooks/useResponseHandler";
 import UsePriceCalculator from "../../../hooks/usePriceCalculator";
 import executeSubmit from "../../../utils/handleSubmit";
+import CustomCarousel from "../../CustomCarousel";
+
 const DetailedCard = ({ data, setTriggerFetch }) => {
   const [guests, setGuests] = useState(1);
   const [dateFrom, setDateFrom] = useState(null);
@@ -22,6 +23,9 @@ const DetailedCard = ({ data, setTriggerFetch }) => {
   const [pageState, setPageState] = useState(null);
   const [action, setAction] = useState(null);
   const { loggedIn } = useAuth();
+  const { response, doFetch } = useLazyFetch();
+  const { media, name, location, maxGuests, meta, description, bookings, price, owner, _count } = data?.venue || data || {};
+  const { wifi, parking, breakfast, pets } = meta || {};
 
   let { id, view } = useParams();
   useEffect(() => {
@@ -36,10 +40,7 @@ const DetailedCard = ({ data, setTriggerFetch }) => {
       }
     }
   }, [view, loggedIn]);
-  const { response, doFetch } = useLazyFetch();
-  const { media, name, location, maxGuests, meta, description, bookings, price, owner, _count } = data?.venue || data || {};
 
-  const { wifi, parking, breakfast, pets } = meta || {};
   useEffect(() => {
     if (pageState === "bookings" && data) {
       setDateFrom(new Date(data.dateFrom));
@@ -50,13 +51,9 @@ const DetailedCard = ({ data, setTriggerFetch }) => {
 
   const totalPrice = UsePriceCalculator(price, dateFrom, dateTo);
 
-  const handleBookingClick = (url, method, body) => {
+  const handleSubmit = (url, method, body) => {
+    body = body ? body : {};
     executeSubmit(url, method, body, doFetch);
-    setAction(method);
-  };
-
-  const handleVenueClick = (url, method) => {
-    executeSubmit(url, method, {}, doFetch);
     setAction(method);
   };
 
@@ -67,16 +64,12 @@ const DetailedCard = ({ data, setTriggerFetch }) => {
     <>
       {data && (
         <div className="max-w-7xl m-auto ">
-          <Carousel>
-            {media.map((image) => (
-              <img src={image.url} alt={image.alt} key={image.url} className="h-[430px]  w-full max-w-7xl object-fill" />
-            ))}
-          </Carousel>
+          <CustomCarousel media={media} />
           <div className=" flex flex-col  justify-center md:flex-row md:justify-between gap-10 ">
             <div className="space-y-4 mt-4  w-full md:w-4/5">
               {pageState === "venues" && (
                 <div className=" flex justify-between mt-5">
-                  <CustomButton onClick={() => handleVenueClick(`${Urls.venuesUrl}/${id}`, "DELETE")} className={`bg-red-800 border border-red-800 hover:text-red-800  hover:bg-white min-w-[250px] h`}>
+                  <CustomButton onClick={() => handleSubmit(`${Urls.venuesUrl}/${id}`, "DELETE")} className={`bg-red-800 border border-red-800 hover:text-red-800  hover:bg-white min-w-[250px] h`}>
                     Delete venue
                   </CustomButton>
                   <Link to={`/venueForm`} state={data}>
@@ -114,7 +107,7 @@ const DetailedCard = ({ data, setTriggerFetch }) => {
                   <div className="space-y-3 text-gray-800 ">
                     <p className="text-tertiary text-xl">Cancel booking:</p>
                     <p>To cancel your booking just press the red button below</p>
-                    <CustomButton className={`bg-red-800 min-w-[250px]`} onClick={() => handleBookingClick(`${Urls.bookingsUrl}/${id}`, "DELETE")}>
+                    <CustomButton className={`bg-red-800 min-w-[250px]`} onClick={() => handleSubmit(`${Urls.bookingsUrl}/${id}`, "DELETE")}>
                       Cancel booking
                     </CustomButton>
                   </div>
@@ -202,7 +195,7 @@ const DetailedCard = ({ data, setTriggerFetch }) => {
                 )}
               </div>
             ) : (
-              <div className="space-y-5 w-full md:max-w-[400px] mt-5 shadow-md p-10">
+              <div className="space-y-5 w-full sm:w-[450px] mx-auto mt-5 shadow-md p-3  md:p-10">
                 <h3 className="text-center mb-5 text-tertiary">Select your dates</h3>
 
                 <div className="flex justify-center">
@@ -258,14 +251,11 @@ const DetailedCard = ({ data, setTriggerFetch }) => {
                     <p className="text-2xl">Total: {totalPrice}kr</p>
                     {loggedIn ? (
                       pageState === "bookings" ? (
-                        <CustomButton
-                          onClick={() => handleBookingClick(`${Urls.bookingsUrl}/${id}`, "PUT", JSON.stringify({ dateFrom: dateFrom.toISOString(), dateTo: dateTo.toISOString(), guests: guests }))}
-                          className={`text-white bg-tertiary border-tertiary hover:text-tertiary hover:bg-white w-full `}
-                        >
+                        <CustomButton onClick={() => handleSubmit(`${Urls.bookingsUrl}/${id}`, "PUT", { dateFrom: dateFrom.toISOString(), dateTo: dateTo.toISOString(), guests: guests })} className={`text-white bg-tertiary border-tertiary hover:text-tertiary hover:bg-white w-full `}>
                           Update booking
                         </CustomButton>
                       ) : (
-                        <CustomButton onClick={() => handleBookingClick(Urls.bookingsUrl, "POST", { dateFrom: dateFrom.toISOString(), dateTo: dateTo.toISOString(), guests: guests, venueId: id })} className={`text-white bg-tertiary border-tertiary hover:text-tertiary hover:bg-white w-full `}>
+                        <CustomButton onClick={() => handleSubmit(Urls.bookingsUrl, "POST", { dateFrom: dateFrom.toISOString(), dateTo: dateTo.toISOString(), guests: guests, venueId: id })} className={`text-white bg-tertiary border-tertiary hover:text-tertiary hover:bg-white w-full `}>
                           Book now
                         </CustomButton>
                       )
