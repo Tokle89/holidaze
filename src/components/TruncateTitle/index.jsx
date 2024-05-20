@@ -1,7 +1,10 @@
-const TruncateTitle = ({ title }) => {
-  const words = title.split(" ");
-  const truncatedTitle = words.slice(0, 2).join(" ");
+const TruncateString = ({ title, length }) => {
+  const maxLength = length || 17;
+  let truncatedTitle = title;
 
-  return <span className="block  whitespace-nowrap overflow-ellipsis"> {truncatedTitle}</span>;
+  title.length < maxLength ? (truncatedTitle = title) : (truncatedTitle = title.substring(0, maxLength) + "...");
+
+  return <span className="block overflow-hidden whitespace-nowrap overflow-ellipsis max-w-100 h-[21px]">{truncatedTitle}</span>;
 };
-export default TruncateTitle;
+
+export default TruncateString;

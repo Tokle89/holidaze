@@ -14,7 +14,6 @@ import Urls from "../../../constants/url";
 import useLazyFetch from "../../../hooks/useLazyFetch";
 import useResponseHandler from "../../../hooks/useResponseHandler";
 import UsePriceCalculator from "../../../hooks/usePriceCalculator";
-import handleBooking from "../../../utils/handleBooking";
 import executeSubmit from "../../../utils/handleSubmit";
 const DetailedCard = ({ data, setTriggerFetch }) => {
   const [guests, setGuests] = useState(1);
@@ -23,8 +22,6 @@ const DetailedCard = ({ data, setTriggerFetch }) => {
   const [pageState, setPageState] = useState(null);
   const [action, setAction] = useState(null);
   const { loggedIn } = useAuth();
-  const { accessToken } = JSON.parse(localStorage.getItem("user"));
-  const apiKey = import.meta.env.VITE_API_KEY;
 
   let { id, view } = useParams();
   useEffect(() => {
@@ -49,13 +46,13 @@ const DetailedCard = ({ data, setTriggerFetch }) => {
       setDateTo(new Date(data.dateTo));
       setGuests(data.guests);
     }
-  }, [data, bookings]);
+  }, [data, bookings, pageState]);
 
   const totalPrice = UsePriceCalculator(price, dateFrom, dateTo);
 
   const handleBookingClick = (url, method, body) => {
-    handleBooking(url, method, body, setAction, doFetch, accessToken, apiKey);
-    console.log(method, body, url);
+    executeSubmit(url, method, body, doFetch);
+    setAction(method);
   };
 
   const handleVenueClick = (url, method) => {
@@ -63,7 +60,7 @@ const DetailedCard = ({ data, setTriggerFetch }) => {
     setAction(method);
   };
 
-  let actionType = view === "bookings" ? "booking" : "venue";
+  let actionType = view === "venues" ? "venue" : "booking";
   useResponseHandler(response, actionType, action, setTriggerFetch);
 
   return (
@@ -268,10 +265,7 @@ const DetailedCard = ({ data, setTriggerFetch }) => {
                           Update booking
                         </CustomButton>
                       ) : (
-                        <CustomButton
-                          onClick={() => handleBookingClick(Urls.bookingsUrl, "POST", JSON.stringify({ dateFrom: dateFrom.toISOString(), dateTo: dateTo.toISOString(), guests: guests, venueId: id }))}
-                          className={`text-white bg-tertiary border-tertiary hover:text-tertiary hover:bg-white w-full `}
-                        >
+                        <CustomButton onClick={() => handleBookingClick(Urls.bookingsUrl, "POST", { dateFrom: dateFrom.toISOString(), dateTo: dateTo.toISOString(), guests: guests, venueId: id })} className={`text-white bg-tertiary border-tertiary hover:text-tertiary hover:bg-white w-full `}>
                           Book now
                         </CustomButton>
                       )

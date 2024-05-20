@@ -7,7 +7,7 @@ const useResponseHandler = (response, actionType, action, setTriggerFetch) => {
   const { showMessage, hideMessage } = useContext(MessageContext);
   const { name: userName } = JSON.parse(localStorage.getItem("user"));
   const navigate = useNavigate();
-  console.log(actionType, action);
+  console.log("action ", actionType, action);
   useEffect(() => {
     if (response) {
       if (response.errors) {

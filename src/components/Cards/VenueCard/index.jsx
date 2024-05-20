@@ -4,7 +4,7 @@ import { FaParking } from "react-icons/fa";
 import { MdFoodBank } from "react-icons/md";
 import { Link } from "react-router-dom";
 import CustomButton from "../../Button";
-import TruncateTitle from "../../TruncateTitle";
+import TruncateString from "../../TruncateTitle";
 import { useParams } from "react-router-dom";
 
 const CardLink = ({ data }) => {
@@ -21,7 +21,7 @@ const CardLink = ({ data }) => {
       <CardBody className="flex-1 py-5 pt-5 pb-0">
         <div className=" flex items-center justify-between">
           <Typography variant="h5" className="font-medium text-black ">
-            {name ? <TruncateTitle title={name} /> : "No name"}
+            {name ? <TruncateString title={name} /> : "No name"}
           </Typography>
 
           <Typography color="blue-gray" className="flex items-center gap-1.5 font-normal">
@@ -32,12 +32,19 @@ const CardLink = ({ data }) => {
                 clipRule="evenodd"
               />
             </svg>
-            {rating}
+            {Number(rating).toFixed(0)}
           </Typography>
         </div>
 
-        <Typography variant="h6" className="font-medium text-black ">
-          <span> {location ? location.city : "Norway"}</span>
+        <Typography variant="h6" className="font-medium text-black  my-2">
+          {location.city && location.country ? (
+            <div className="flex gap-3">
+              <TruncateString title={location.city} length={10} />
+              <TruncateString title={location.country} length={10} />
+            </div>
+          ) : (
+            "No location added"
+          )}
         </Typography>
 
         <Typography color="gray">
@@ -46,7 +53,7 @@ const CardLink = ({ data }) => {
         <div className="group mt-3 inline-flex flex-wrap items-center gap-3">
           {wifi && (
             <Tooltip content="Free wifi">
-              <span className="cursor-pointer rounded-full border border-gray-900/5 bg-gray-900/5 p-3 text-gray-900 transition-colors hover:border-gray-900/10 hover:bg-gray-900/10 hover:!opacity-100 group-hover:opacity-70">
+              <span className="cursor-pointer rounded-full border border-primary bg-primary p-3 text-white transition-colors hover:bg-white hover:text-primary hover:!opacity-100 group-hover:opacity-70">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5">
                   <path
                     fillRule="evenodd"
@@ -59,21 +66,21 @@ const CardLink = ({ data }) => {
           )}
           {breakfast && (
             <Tooltip content="Breakfast">
-              <span className="cursor-pointer rounded-full border border-gray-900/5 bg-gray-900/5 p-3 text-gray-900 transition-colors hover:border-gray-900/10 hover:bg-gray-900/10 hover:!opacity-100 group-hover:opacity-70">
+              <span className="cursor-pointer rounded-full border border-primary bg-primary p-3 text-white transition-colors hover:bg-white hover:text-primary hover:!opacity-100 group-hover:opacity-70">
                 <MdFoodBank className="h-5 w-5" />
               </span>
             </Tooltip>
           )}
           {parking && (
             <Tooltip content="Free parking">
-              <span className="cursor-pointer rounded-full border border-gray-900/5 bg-gray-900/5 p-3 text-gray-900 transition-colors hover:border-gray-900/10 hover:bg-gray-900/10 hover:!opacity-100 group-hover:opacity-70">
+              <span className="cursor-pointer rounded-full border border-primary bg-primary p-3 text-white transition-colors hover:bg-white hover:text-primary hover:!opacity-100 group-hover:opacity-70">
                 <FaParking className="h-5 w-5" />
               </span>
             </Tooltip>
           )}
           {pets && (
             <Tooltip content="Pets Allowed">
-              <span className="cursor-pointer rounded-full border border-gray-900/5 bg-gray-900/5 p-3 text-gray-900 transition-colors hover:border-gray-900/10 hover:bg-gray-900/10 hover:!opacity-100 group-hover:opacity-70">
+              <span className="cursor-pointer rounded-full border border-primary bg-primary p-3 text-white transition-colors hover:bg-white hover:text-primary hover:!opacity-100 group-hover:opacity-70">
                 <IoPaw className="h-5 w-5" />
               </span>
             </Tooltip>
