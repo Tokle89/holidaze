@@ -16,7 +16,7 @@ const Search = () => {
     setSearchTerm("");
   };
   return (
-    <div className="flex justify-center gap-5  items-start relative">
+    <div className="flex justify-center gap-2 md:gap-5  items-start relative">
       <div>
         <input onChange={handleChange} type="text" className="h-[45px] w-full px-4 py-2 rounded-l-md border-2 border-tertiary focus:outline-none text-gray-700" placeholder="Search..." />
         <div className="Border border-primary bg-white text-tertiary overflow-auto max-h-[500px] rounded-l-md mr-2 absolute max-w-[248px]  w-full">

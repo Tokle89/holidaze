@@ -1,7 +1,7 @@
 import CustomButton from "../Button";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import CardLink from "../Cards/Card";
+import CardLink from "../Cards/VenueCard";
 import BookingCard from "../Cards/ProfileBookingCard";
 
 const UserBookingsAndVenues = ({ data, view, userName }) => {

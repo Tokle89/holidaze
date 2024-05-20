@@ -7,9 +7,9 @@ const Home = () => {
   const { hash } = useLocation();
 
   useEffect(() => {
-    if (hash === "#venues") {
+    if (hash.startsWith("#venues")) {
       window.scrollTo({
-        top: document.querySelector(hash).offsetTop,
+        top: document.querySelector(hash.split("?")[0]).offsetTop,
         behavior: "smooth",
       });
     }

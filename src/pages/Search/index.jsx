@@ -1,6 +1,6 @@
 import Search from "../../components/Search";
 import { useParams } from "react-router-dom";
-import CardLink from "../../components/Cards/Card";
+import CardLink from "../../components/Cards/VenueCard";
 import useSearch from "../../hooks/UseSearch";
 
 const SearchPage = () => {
