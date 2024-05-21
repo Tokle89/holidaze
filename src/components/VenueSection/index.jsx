@@ -1,12 +1,15 @@
 import useFetch from "../../hooks/useFetch";
 import CardLink from "../Cards/VenueCard";
-
+import Loader from "../Loader";
 import { Link } from "react-router-dom";
 import UseUpdateSortParams from "../../hooks/UseUpdateSortParams";
+import { useContext } from "react";
+import MessageContext from "../../utils/MessageContexts";
 
 const VenueSection = () => {
   const { isOpen, setIsOpen, dynamicHeader, sortingUrl, sortBy, sortOrder, page, limit } = UseUpdateSortParams();
   const { data, isLoading, isError } = useFetch(sortingUrl);
+  const { showMessage } = useContext(MessageContext);
 
   return (
     <section id="venues" className="min-h-screen px-2.5 max-w-7xl mx-auto py-20">
@@ -40,11 +43,9 @@ const VenueSection = () => {
           </ul>
         )}
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-        {isLoading && <p>Loading...</p>}
-        {isError && <p>An error has occurred</p>}
-        {data && data.data && data.data.filter(({ name }) => !name.toLowerCase().includes("test")).map((venue) => <CardLink key={venue.id} data={venue} />)}
-      </div>
+      {isLoading && <Loader />}
+      {isError && showMessage("error", "An error has occurred, please try again later.")}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">{data && data.data && data.data.filter(({ name }) => !name.toLowerCase().includes("test")).map((venue) => <CardLink key={venue.id} data={venue} />)}</div>
       {data && data.data && (
         <div className="flex justify-evenly mt-10">
           {page > 1 && (

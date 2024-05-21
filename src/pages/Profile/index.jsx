@@ -6,6 +6,9 @@ import ProfileCard from "../../components/Cards/ProfileCard";
 import CustomButton from "../../components/Button";
 import UserBookingsAndVenues from "../../components/UserBookingsAndVenues";
 import DetailedCard from "../../components/Cards/DetailedCard";
+import { useContext } from "react";
+import MessageContext from "../../utils/MessageContexts";
+import Loader from "../../components/Loader";
 
 const ProfilePage = () => {
   const [url, setUrl] = useState();
@@ -15,6 +18,7 @@ const ProfilePage = () => {
   const apiKey = import.meta.env.VITE_API_KEY;
   const { accessToken, name } = JSON.parse(localStorage.getItem("user"));
   const [triggerFetch, setTriggerFetch] = useState(false);
+  const { showMessage } = useContext(MessageContext);
   const fetchOptions = useMemo(
     () => ({
       method: "GET",
@@ -53,6 +57,8 @@ const ProfilePage = () => {
   }, [url, triggerFetch]);
   return (
     <main className=" my-12 px-5 w-full max-w-7xl mx-auto">
+      {profileLoading && <Loader />}
+      {profileError && showMessage("error", "An error has occurred, please try again later.")}
       {profileData && profileData.data && (
         <div>
           <div className="max-w-[350px] mx-auto">
@@ -68,6 +74,8 @@ const ProfilePage = () => {
               )}
             </div>
           </div>
+          {detailedLoading && <Loader />}
+          {detailedError && showMessage("error", "An error has occurred, please try again later.")}
           {detailedData && detailedData.data && id ? <DetailedCard data={detailedData.data} setTriggerFetch={setTriggerFetch} /> : <UserBookingsAndVenues data={profileData.data} view={view} userName={userName} setTriggerFetch={setTriggerFetch} />}
         </div>
       )}

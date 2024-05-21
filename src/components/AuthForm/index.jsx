@@ -12,6 +12,7 @@ const AuthForm = () => {
   const { authMode, setAuthMode, setShowModal, setLoggedIn } = useAuth();
   const [authUrl, setAuthUrl] = useState(authMode ? Urls.loginUrl : Urls.registerUrl);
   const [successMessage, setSuccessMessage] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(false);
   const { response, error, doFetch } = useLazyFetch();
   const navigate = useNavigate();
 
@@ -56,6 +57,10 @@ const AuthForm = () => {
   }, [authMode]);
 
   useEffect(() => {
+    if (response?.errors) {
+      setErrorMessage(true);
+      return;
+    }
     if (response && !authMode) {
       console.log(response);
       setAuthMode(true);
@@ -67,8 +72,6 @@ const AuthForm = () => {
       setLoggedIn(true);
       setShowModal(false);
       navigate("/profile/" + userName);
-    } else if (error) {
-      console.log(error);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [response, error]);
@@ -90,6 +93,22 @@ const AuthForm = () => {
             <div className="flex flex-col items-center">
               <h4 className="block font-sans text-2xl antialiased font-semibold leading-snug tracking-normal ">{authMode ? `Login` : `Register`}</h4>
               <p className="block mt-1 font-sans text-base antialiased font-normal leading-relaxed"> Please enter your details to {authMode ? `login` : `register`}.</p>
+              <p className="block mt-2 font-sans text-base antialiased font-normal leading-relaxed"> {authMode ? `Not registered ?` : `Already registered ?`} </p>
+              {authMode ? (
+                <CustomButton onClick={() => setAuthMode(false)} className={" w-[230px] py-2 text-white bg-primary border border-primary hover:text-primary hover:bg-white"}>
+                  Register here
+                </CustomButton>
+              ) : (
+                <CustomButton onClick={() => setAuthMode(true)} className={"w-[230px] py-2 text-white bg-primary border border-primary hover:text-primary hover:bg-white"}>
+                  Login here
+                </CustomButton>
+              )}
+            </div>
+          )}
+
+          {errorMessage && (
+            <div className="flex flex-col items-center">
+              <p className="block mt-1 font-sans text-1xl text-red-800 antialiased font-medium leading-relaxed"> {response.errors[0].message}</p>
             </div>
           )}
         </div>
