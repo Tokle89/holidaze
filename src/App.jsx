@@ -7,7 +7,7 @@ import UserBookingsAndVenues from "./components/UserBookingsAndVenues";
 import DetailedCard from "./components/Cards/DetailedCard";
 import { AuthProvider } from "./components/AuthHandler";
 import { MessageProvider } from "./components/Message/MessageProvider";
-import VenueForm from "./components/VenueForm";
+import VenueForm from "./pages/VenueForm";
 import SearchPage from "./pages/Search";
 import HostPage from "./pages/Host";
 
