@@ -163,9 +163,15 @@ const DetailedCard = ({ data, setTriggerFetch }) => {
                 <p className="text-gray-800">{description}</p>
               </div>
               <h2 className="text-2xl mt-10">Hosted by:</h2>
-              <Link to={`/profile/${owner.name}`} className="shadow-md hover:shadow-lg p-5 inline-block">
-                <ProfileCard data={owner} />
-              </Link>
+              {loggedIn ? (
+                <Link to={`/profile/${owner.name}`} className="shadow-md hover:shadow-lg p-5 inline-block">
+                  <ProfileCard data={owner} />
+                </Link>
+              ) : (
+                <div className="shadow-md w-3/4">
+                  <ProfileCard data={owner} />
+                </div>
+              )}
             </div>
             {pageState === "venues" ? (
               <div className="space-y-5 w-full md:max-w-[400px] mt-5 shadow-md p-10">

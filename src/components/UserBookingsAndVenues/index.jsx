@@ -8,7 +8,6 @@ const UserBookingsAndVenues = ({ data, view, userName }) => {
   const { bookings, venues } = data;
   const [activeButton, setActiveButton] = useState(true);
   const { name } = JSON.parse(localStorage.getItem("user"));
-
   useEffect(() => {
     if (view === "bookings") {
       setActiveButton(true);
@@ -53,26 +52,25 @@ const UserBookingsAndVenues = ({ data, view, userName }) => {
           )}
         </div>
       )}
-      {view === "venues" ||
-        (name && name !== userName && (
-          <>
-            {venues.length === 0 ? (
-              <div className="text-center my-5 space-y-5">
-                <h3 className="text-tertiary font-bold">You have not created any venues yet</h3>
-                <p>Create your first venue now</p>
+      {(view === "venues" && name === userName) || name !== userName ? (
+        <>
+          {venues.length === 0 ? (
+            <div className="text-center my-5 space-y-5">
+              <h3 className="text-tertiary font-bold">You have not created any venues yet</h3>
+              <p>Create your first venue now</p>
 
-                <CustomButton className="border border-tertiary bg-tertiary text-white hover:bg-white hover:text-tertiary ">Create</CustomButton>
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-5 my-5">
-                {" "}
-                {venues.map((venue) => (
-                  <CardLink data={venue} key={venue.id} />
-                ))}
-              </div>
-            )}
-          </>
-        ))}
+              <CustomButton className="border border-tertiary bg-tertiary text-white hover:bg-white hover:text-tertiary ">Create</CustomButton>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-5 my-5">
+              {" "}
+              {venues.map((venue) => (
+                <CardLink data={venue} key={venue.id} />
+              ))}
+            </div>
+          )}
+        </>
+      ) : null}
     </div>
   );
 };

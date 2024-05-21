@@ -3,8 +3,12 @@ import { NavLink, useLocation } from "react-router-dom";
 import { IoClose } from "react-icons/io5";
 import handleActiveClass from "../../../utils/handleActiveClass";
 import { FaSearch } from "react-icons/fa";
+import { useAuth } from "../../AuthHandler";
+import LoginButton from "../../AuthButtons/loginBtn";
+import RegisterButton from "../../AuthButtons/RegisterBtn";
 const MobileNav = ({ setShowMenu }) => {
   const location = useLocation();
+  const { loggedIn } = useAuth();
 
   return (
     <div className="fixed top-0 right-0 z-100 overflow-auto flex  w-full max-w-[20rem] flex-col rounded bg-primary bg-clip-border p-4 text-white shadow-xl shadow-blue-gray-900/5 animate-fade-left animate-once animate-ease-in animate-duration-[100ms]">
@@ -46,7 +50,14 @@ const MobileNav = ({ setShowMenu }) => {
           <FaSearch />
         </NavLink>
       </nav>
-      <ProfileMenu />
+      {loggedIn ? (
+        <ProfileMenu />
+      ) : (
+        <div className="flex gap-7   pt-5">
+          <LoginButton className={`border-white bg-tertiary text-white hover:text-tertiary hover:bg-white rounded-none rounded-l `} />
+          <RegisterButton className={`border-white bg-white text-tertiary rounded-none rounded-r hover:bg-tertiary hover:text-white`} />
+        </div>
+      )}
     </div>
   );
 };

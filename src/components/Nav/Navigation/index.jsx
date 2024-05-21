@@ -7,7 +7,7 @@ const Nav = () => {
   const location = useLocation();
 
   return (
-    <nav className="h-[30px] flex gap-20">
+    <nav className="h-[30px] flex justify-around  ">
       <NavLink to="/" className={handleActiveClass(location, "/", " p-2 hover:bg-blue-gray-50 hover:bg-opacity-80 hover:text-blue-gray-900")}>
         <p> Home</p>
       </NavLink>
