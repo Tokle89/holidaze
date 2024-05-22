@@ -8,6 +8,7 @@ import Urls from "../../constants/url";
 import useLazyFetch from "../../hooks/useLazyFetch";
 import useResponseHandler from "../../hooks/useResponseHandler";
 import { useLocation } from "react-router-dom";
+import { HiOutlinePlusSm, HiOutlineMinus } from "react-icons/hi";
 
 const VenueForm = () => {
   const [step, setStep] = useState(1);
@@ -23,18 +24,34 @@ const VenueForm = () => {
   const schema = yup.object({
     name: yup.string().min(3).required(`Name is required`),
     description: yup.string().min(3).required(`Description is required`),
-    media: yup.array().of(
-      yup.object().shape({
-        url: yup.string().url(`Must be a valid URL`).max(300, `url can not be longer than 300 characters`),
-      })
-    ),
+    media: yup
+      .array()
+      .of(
+        yup.object().shape({
+          url: yup.string().url(`Must be a valid URL`).max(300, `url can not be longer than 300 characters`),
+        })
+      )
+      .max(8, `You can only max add 8 images`),
     price: yup
       .number()
-      .min(0)
-
+      .nullable()
+      .transform((value, originalValue) => (originalValue.trim() === "" ? null : value))
+      .min(1, "Price must be at least 1")
       .required(`Price is required`),
-    maxGuests: yup.number().min(0).max(100).required(`Max guests is required`),
-    rating: yup.number().min(0, "Rating must be at least 0").max(5, "Rating must be at most 5").required("Rating is required"),
+    maxGuests: yup
+      .number()
+      .nullable()
+      .transform((value, originalValue) => (originalValue.trim() === "" ? null : value))
+      .min(1, "Max guests must be at least 1")
+      .max(100)
+      .required(`Max guests is required`),
+    rating: yup
+      .number()
+      .nullable()
+      .transform((value, originalValue) => (originalValue.trim() === "" ? null : value))
+      .min(0, "Rating must be at least 0")
+      .max(5, "Rating must be at most 5")
+      .required("Rating is required"),
 
     location: yup.object({
       address: yup.string().required("Address is required"),
@@ -72,7 +89,7 @@ const VenueForm = () => {
     },
     resolver: yupResolver(schema),
   });
-  const { fields, append } = useFieldArray({
+  const { fields, append, remove } = useFieldArray({
     control,
     name: "media",
   });
@@ -106,7 +123,7 @@ const VenueForm = () => {
   useResponseHandler(response, "venue", method);
   return (
     <main className="m-auto my-10  ">
-      <div className=" w-full md:min-w-[600px]">
+      <div className=" w-full md:w-[600px]">
         <div className="  text-right text-blue-gray-500"></div>
         <div className="relative  text-tertiary shadow-none rounded-xl bg-clip-border">
           <div className="flex flex-col items-center">
@@ -144,19 +161,26 @@ const VenueForm = () => {
               <div>
                 <div className="flex justify-between align-center">
                   <h6 className="block mb-2 font-sans text-base antialiased font-semibold leading-relaxed tracking-normal text-tertiary">Url link of venue images</h6>
-                  <button type="button" className="font-bold text-tertiary text-3xl" onClick={() => append({ url: "" })}>
-                    +
+                  <button type="button" className="  font-bold text-tertiary text-3xl hover:text-primary " onClick={() => append({ url: "" })} disabled={fields.length >= 8}>
+                    <HiOutlinePlusSm />
                   </button>
                 </div>
 
                 {fields.map((item, index) => (
                   <div key={item.id} className="relative h-11 w-full min-w-[200px]">
-                    <p className=" text-red-700 font-medium mb-1">{errors.media && errors.media[index] && errors.media[index].url && errors.media[index].url.message}</p>
-                    <input
-                      {...register(`media.${index}.url`)}
-                      placeholder="Url link to venue image"
-                      className="peer h-full w-full rounded-md border border-tertiary bg-transparent px-3 py-3 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:tertiary placeholder-shown:tertiary focus:border-2 focus:border-primary focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
-                    />
+                    <p className=" text-red-700 font-medium my-1">{errors.media && errors.media[index] && errors.media[index].url && errors.media[index].url.message}</p>
+                    <div className={`flex ${length > 1 && `me-2`}`}>
+                      <input
+                        {...register(`media.${index}.url`)}
+                        placeholder="Url link to venue image"
+                        className="peer h-full w-full rounded-md border border-tertiary bg-transparent px-3 py-3 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:tertiary placeholder-shown:tertiary focus:border-2 focus:border-primary focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
+                      />
+                      {fields.length > 1 && (
+                        <button type="button" className=" ms-2 text-2xl font-extrabold text-tertiary  hover:text-primary" onClick={() => remove(index)}>
+                          <HiOutlineMinus />
+                        </button>
+                      )}
+                    </div>
                   </div>
                 ))}
               </div>
@@ -165,6 +189,7 @@ const VenueForm = () => {
                 <p className=" text-red-700 font-medium mb-1">{errors.price?.message}</p>
                 <div className="relative h-11 w-full min-w-[200px]">
                   <input
+                    min="1"
                     type="number"
                     {...register(`price`)}
                     placeholder="The price pr night in NOK"
@@ -177,6 +202,7 @@ const VenueForm = () => {
                 <p className=" text-red-700 font-medium mb-1">{errors.maxGuests?.message}</p>
                 <div className="relative h-11 w-full min-w-[200px]">
                   <input
+                    min="1"
                     type="number"
                     {...register(`maxGuests`)}
                     placeholder="The maximum number of guests allowed in the venue"
@@ -310,15 +336,17 @@ const VenueForm = () => {
             </>
           )}
           {step !== 4 && (
-            <div className="flex gap-5 justify-between">
-              <CustomButton
-                onClick={() => {
-                  if (step > 1) prevStep();
-                }}
-                className={`w-[150px] md:w-1/4 text-white bg-tertiary border border-tertiary hover:text-tertiary hover:bg-white ${step === 1 && `bg-blue-300 border-blue-300`} `}
-              >
-                Previous
-              </CustomButton>
+            <div className={`flex gap-5  ${step <= 1 ? `justify-center` : `justify-between`}`}>
+              {step > 1 && (
+                <CustomButton
+                  onClick={() => {
+                    if (step > 1) prevStep();
+                  }}
+                  className={`w-[150px] md:w-1/4 text-white bg-tertiary border border-tertiary hover:text-tertiary hover:bg-white  `}
+                >
+                  Previous
+                </CustomButton>
+              )}
 
               <CustomButton onClick={nextStep} className={" w-[150px] md:w-1/4 text-white bg-tertiary border border-tertiary hover:text-tertiary hover:bg-white"}>
                 Next
