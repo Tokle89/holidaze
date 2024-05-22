@@ -1,12 +1,12 @@
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import CustomButton from "../Button";
-import Urls from "../../constants/url";
+import CustomButton from "../../Button";
+import Urls from "../../../constants/url";
 import { useEffect, useState } from "react";
-import useLazyFetch from "../../hooks/useLazyFetch";
+import useLazyFetch from "../../../hooks/useLazyFetch";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../AuthHandler";
+import { useAuth } from "../../AuthHandler";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 
 const AuthForm = () => {
@@ -78,8 +78,8 @@ const AuthForm = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [response, error]);
   return (
-    <div className=" fixed inset-0 z-[1000] grid h-screen w-screen place-items-center bg-black bg-opacity-60 backdrop-blur-sm transition-opacity duration-300">
-      <div className="relative p-4  md:min-w-[400px]  rounded-lg bg-white font-sans text-base font-light leading-relaxed antialiased shadow-2xl">
+    <div onMouseDown={() => setShowModal(false)} className="  fixed inset-0 z-[1000] grid h-screen w-screen place-items-center bg-black bg-opacity-60 backdrop-blur-sm transition-opacity duration-300">
+      <div onMouseDown={(e) => e.stopPropagation()} className="relative p-4   md:min-w-[400px]  rounded-lg bg-white font-sans text-base font-light leading-relaxed antialiased shadow-2xl">
         <div className="  text-right text-blue-gray-500">
           <button onClick={() => setShowModal(false)} className="  font-sans text-2xl font-bold text-red-500 uppercase transition-all rounded-lg middle none center hover:bg-red-500/10 active:bg-red-500/30 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
             x

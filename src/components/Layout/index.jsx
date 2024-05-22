@@ -2,8 +2,8 @@ import { Outlet } from "react-router-dom";
 import Header from "../Header";
 import Footer from "../Footer";
 import { useAuth } from "../AuthHandler";
-import AuthForm from "../AuthForm";
-import ProfileForm from "../ProfileForm";
+import AuthForm from "../Forms/AuthForm";
+import ProfileForm from "../Forms/ProfileForm";
 import { useEffect } from "react";
 const Layout = () => {
   const { showModal, authMode, showProfileForm } = useAuth();
