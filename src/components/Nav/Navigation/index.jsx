@@ -18,7 +18,7 @@ const Nav = () => {
       </NavLink>
 
       {loggedIn ? (
-        <NavLink to="/venueForm" className={handleActiveClass(location, "/host", " p-2 hover:bg-blue-gray-50 hover:bg-opacity-80 hover:text-blue-gray-900")}>
+        <NavLink to="/venueForm" className={handleActiveClass(location, "/venueForm", " p-2 hover:bg-blue-gray-50 hover:bg-opacity-80 hover:text-blue-gray-900")}>
           Create a venue
         </NavLink>
       ) : (
