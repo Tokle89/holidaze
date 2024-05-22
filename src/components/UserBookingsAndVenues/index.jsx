@@ -20,11 +20,11 @@ const UserBookingsAndVenues = ({ data, view, userName }) => {
       {name && name === userName ? (
         <div className="flex">
           <Link to={`/profile/${userName}/bookings`} className="w-full">
-            <CustomButton className={`border rounded-none text-white hover:bg-white hover:text-tertiary w-full ${activeButton ? `border-primary bg-white text-primary` : `bg-primary border-primary`}`}>{name && name === userName ? `Your bookings` : `${userName}'s Venues`}</CustomButton>
+            <CustomButton className={` px-1 border rounded-none text-white hover:bg-primary hover:text-white w-full ${activeButton ? `bg-primary border-primary` : `border-primary bg-white text-primary`}`}>{name && name === userName ? `Your bookings` : `${userName}'s Venues`}</CustomButton>
           </Link>
 
           <Link to={`/profile/${userName}/venues`} className="w-full">
-            <CustomButton className={`border rounded-none text-white hover:bg-white hover:text-tertiary w-full ${!activeButton ? `border-primary bg-white text-primary` : `bg-primary border-primary`}`}>Your venues</CustomButton>
+            <CustomButton className={` px-4 border rounded-none text-white hover:bg-primary hover:text-white w-full ${!activeButton ? `bg-primary border-primary` : `border-primary bg-white text-primary`}`}>Your venues</CustomButton>
           </Link>
         </div>
       ) : (

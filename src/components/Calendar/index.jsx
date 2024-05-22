@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
-import { eachDayOfInterval, parseISO } from "date-fns";
+import { eachDayOfInterval, parseISO, isAfter, isBefore } from "date-fns";
 import "react-datepicker/dist/react-datepicker.css";
 
 const BookingCalendar = ({ bookings, onDateChange, selectedDates }) => {
@@ -27,14 +27,23 @@ const BookingCalendar = ({ bookings, onDateChange, selectedDates }) => {
 
   const onChange = (dates) => {
     const [start, end] = dates;
-    setStartDate(start);
-    setEndDate(end);
     if (start && end) {
-      onDateChange(start, end);
+      const isInvalidRange = excludeDates.some((date) => isAfter(date, start) && isBefore(date, end));
+      if (!isInvalidRange) {
+        setStartDate(start);
+        setEndDate(end);
+        onDateChange(start, end);
+      } else if (isInvalidRange) {
+        setStartDate(null);
+        setEndDate(null);
+      }
+    } else {
+      setStartDate(start);
+      setEndDate(end);
     }
   };
 
-  return <DatePicker selected={startDate} onChange={onChange} startDate={startDate} endDate={endDate} excludeDates={excludeDates} selectsRange inline />;
+  return <DatePicker selected={startDate} onChange={onChange} startDate={startDate} endDate={endDate} minDate={new Date()} excludeDates={excludeDates} selectsRange inline />;
 };
 
 export default BookingCalendar;
