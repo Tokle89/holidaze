@@ -6,7 +6,7 @@ const Urls = {
   venuesUrl: `${holidazeUrl}/venues`,
   bookingsUrl: `${holidazeUrl}/bookings`,
   registerUrl: `${BaseUrl}auth/register`,
-  loginUrl: `${BaseUrl}auth/login`,
+  loginUrl: `${BaseUrl}auth/login?_holidaze=true`,
   apiKeyUrl: `${BaseUrl}auth/create-api-key`,
   profileQueryParamUrl: `?_venues=true&_bookings=true`,
   venueQueryParamUrl: `?_owner=true&_bookings=true`,

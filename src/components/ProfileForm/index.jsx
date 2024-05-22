@@ -12,7 +12,7 @@ import { useAuth } from "../AuthHandler";
 const ProfileForm = () => {
   const { setShowProfileForm } = useAuth();
   const { response, doFetch } = useLazyFetch();
-  const { name } = JSON.parse(localStorage.getItem("user"));
+  const { name, venueManager } = JSON.parse(localStorage.getItem("user"));
   console.log(name);
 
   const schema = yup.object({
@@ -76,7 +76,13 @@ const ProfileForm = () => {
             <h6 className="block mb-3  font-sans text-base antialiased font-semibold leading-relaxed tracking-normal text-tertiary ">Register as a host</h6>
             <div className="inline-flex items-center">
               <div className="relative inline-block w-8 h-4 rounded-full cursor-pointer">
-                <input {...register(`VenueManager`)} id="switch-1" type="checkbox" className="absolute w-8 h-4 transition-colors duration-300 rounded-full appearance-none cursor-pointer peer bg-blue-gray-100 checked:bg-blue-500 peer-checked:border-blue-500 peer-checked:before:bg-blue-500" />
+                <input
+                  {...register(`VenueManager`)}
+                  defaultChecked={venueManager}
+                  id="switch-1"
+                  type="checkbox"
+                  className="absolute w-8 h-4 transition-colors duration-300 rounded-full appearance-none cursor-pointer peer bg-blue-gray-100 checked:bg-blue-500 peer-checked:border-blue-500 peer-checked:before:bg-blue-500"
+                />
                 <label
                   htmlFor="switch-1"
                   className="before:content[''] absolute top-2/4 -left-1 h-5 w-5 -translate-y-2/4 cursor-pointer rounded-full border border-blue-gray-100 bg-white shadow-md transition-all duration-300 before:absolute before:top-2/4 before:left-2/4 before:block before:h-10 before:w-10 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity hover:before:opacity-10 peer-checked:translate-x-full peer-checked:border-blue-500 peer-checked:before:bg-blue-500"

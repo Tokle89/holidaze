@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import useLazyFetch from "../../hooks/useLazyFetch";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../AuthHandler";
+import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 
 const AuthForm = () => {
   const { authMode, setAuthMode, setShowModal, setLoggedIn } = useAuth();
@@ -14,6 +15,7 @@ const AuthForm = () => {
   const [successMessage, setSuccessMessage] = useState(false);
   const [errorMessage, setErrorMessage] = useState(false);
   const { response, error, doFetch } = useLazyFetch();
+  const [showPassword, setShowPassword] = useState(true);
   const navigate = useNavigate();
 
   const schema = yup.object({
@@ -153,12 +155,24 @@ const AuthForm = () => {
           <div>
             <h6 className="block mb-3  font-sans text-base antialiased font-semibold leading-relaxed tracking-normal text-tertiary ">Your Password</h6>
             <p className="font-medium text-red-700">{errors.password?.message}</p>
-            <div className="relative h-11 w-full min-w-[200px]">
-              <input
-                {...register(`password`)}
-                placeholder="********"
-                className="peer h-full w-full rounded-md border border-tertiary   bg-transparent px-3 py-3 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:tertiary placeholder-shown:tertiary focus:border-2 focus:border-primary   focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
-              />
+            <div className="flex">
+              <div className="relative h-11 w-full min-w-[200px]">
+                <input
+                  {...register(`password`)}
+                  type={showPassword ? "password" : "text"}
+                  placeholder="********"
+                  className="peer h-full w-full rounded-md border border-tertiary   bg-transparent px-3 py-3 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:tertiary placeholder-shown:tertiary focus:border-2 focus:border-primary   focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
+                />
+              </div>
+              {showPassword ? (
+                <button type="button" onClick={() => setShowPassword(!showPassword)}>
+                  <IoEyeOffOutline className="text-2xl ms-3 text-primary" />
+                </button>
+              ) : (
+                <button type="button" onClick={() => setShowPassword(!showPassword)}>
+                  <IoEyeOutline className="text-2xl ms-3 text-primary" />
+                </button>
+              )}
             </div>
           </div>
           {!authMode && (
