@@ -168,7 +168,7 @@ const DetailedCard = ({ data, setTriggerFetch }) => {
                   <ProfileCard data={owner} />
                 </Link>
               ) : (
-                <div className="shadow-md w-3/4">
+                <div className="shadow-md ">
                   <ProfileCard data={owner} />
                 </div>
               )}
