@@ -6,8 +6,15 @@ import Urls from "../../../constants/url";
 import { useEffect, useState } from "react";
 import useLazyFetch from "../../../hooks/useLazyFetch";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../AuthHandler";
+import useAuth from "../../AuthHandler/AuthProvider";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
+
+/**
+ * A form component that handles user authentication. It allows users to login or register. It uses the useAuth hook to manage the authentication state that decides if the user is shown the login or register form. The form uses the react-hook-form library for form validation and the yup library for schema validation.
+ * @returns {JSX.Element}
+ * @example
+ * <AuthForm />
+ */
 
 const AuthForm = () => {
   const { authMode, setAuthMode, setShowModal, setLoggedIn } = useAuth();
@@ -18,6 +25,9 @@ const AuthForm = () => {
   const [showPassword, setShowPassword] = useState(true);
   const navigate = useNavigate();
 
+  /**
+   * A schema object that defines the validation rules for the form fields.
+   */
   const schema = yup.object({
     name: authMode
       ? yup.string()
@@ -30,6 +40,9 @@ const AuthForm = () => {
     avatar: authMode ? yup.string() : yup.string().url("Avatar must be a valid URL"),
   });
 
+  /**
+   * A custom hook that handles form submission and validation.
+   */
   const {
     register,
     handleSubmit,
@@ -39,6 +52,10 @@ const AuthForm = () => {
     resolver: yupResolver(schema),
   });
 
+  /**
+   * Function that handles form submission. It sends a POST request to the server with the form data. It uses AuthUrl to determine the endpoint to send the request to, and authMode to determine if the avatar field should be included in the form data.
+   * @param {object} data  - An object containing the form data.
+   */
   const onSubmit = (data) => {
     if (!authMode) {
       data.avatar = { url: data.avatar };
@@ -53,11 +70,18 @@ const AuthForm = () => {
 
     doFetch(authUrl, fetchOptions);
   };
-
+  /**
+   * A useEffect hook that listens for changes in the authMode state. It updates the authUrl state based on the authMode value.
+   */
   useEffect(() => {
     setAuthUrl(authMode ? Urls.loginUrl : Urls.registerUrl);
   }, [authMode]);
 
+  /**
+   * A useEffect hook that listens for changes in the response and error states. It updates the errorMessage and successMessage states based on the response and error values. It also updates the authMode state based on the response value.
+   * If a user is registered successfully it changes the authMode state to true and displays a success message and takes the user to the login form.
+   * If a user logs in successfully it saves the user data to the local storage and takes the user to the profile page.
+   */
   useEffect(() => {
     if (response?.errors) {
       setErrorMessage(true);

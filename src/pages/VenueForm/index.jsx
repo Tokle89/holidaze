@@ -9,8 +9,10 @@ import useLazyFetch from "../../hooks/useLazyFetch";
 import useResponseHandler from "../../hooks/useResponseHandler";
 import { useLocation } from "react-router-dom";
 import { HiOutlinePlusSm, HiOutlineMinus } from "react-icons/hi";
+import RenderPageHeadInfo from "../../hooks/UsePageHeadHandler";
 
 const VenueForm = () => {
+  RenderPageHeadInfo("Venue Form", "Create or update your venue");
   const [step, setStep] = useState(1);
   const progressWidthClasses = ["w-1/4", "w-2/4", "w-3/4", "w-full"];
   const { response, doFetch } = useLazyFetch();

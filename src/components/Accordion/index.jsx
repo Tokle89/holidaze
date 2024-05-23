@@ -1,6 +1,15 @@
 import { useState } from "react";
 import { FaArrowDown } from "react-icons/fa";
 
+/**
+ * Accordion component for displaying questions and answers in a collapsible format.
+ *
+ * @component
+ * @example
+ * <Accordion />
+ *
+ */
+
 const Accordion = () => {
   const [open, setOpen] = useState(0);
 

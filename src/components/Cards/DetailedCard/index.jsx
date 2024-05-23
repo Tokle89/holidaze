@@ -6,7 +6,7 @@ import BookingCalendar from "../../Calendar";
 import { useState, useEffect } from "react";
 import CustomButton from "../../Button";
 import ProfileCard from "../ProfileCard";
-import { useAuth } from "../../AuthHandler";
+import useAuth from "../../AuthHandler/AuthProvider";
 import LoginButton from "../../AuthButtons/loginBtn";
 import { useParams, Link } from "react-router-dom";
 import Urls from "../../../constants/url";
@@ -15,6 +15,18 @@ import useResponseHandler from "../../../hooks/useResponseHandler";
 import UsePriceCalculator from "../../../hooks/usePriceCalculator";
 import executeSubmit from "../../../utils/handleSubmit";
 import CustomCarousel from "../../CustomCarousel";
+/**
+ * DetailedCard component displays detailed information about a venue or booking. It changes its state based on the view prop. It takes data and setTriggerFetch as props, and it uses the useLazyFetch, useResponseHandler, and usePriceCalculator hooks to handle the fetch requests, response handling, and price calculation.
+ * It uses the useParams hook to get the view and id from the URL, and the useAuth hook to get the loggedIn state.
+ * It uses the ProfileCard, BookingCalendar, CustomButton, LoginButton, and CustomCarousel components.
+ * It changes from a booking view to a venue view based on the view prop.
+ * If the user is logged in, it displays the bookings or venues based on the view prop, and lets that user create, book, update, or delete a booking or venue.
+ * @param {object} data - The data object that contains the venue or booking information.
+ * @param {function} setTriggerFetch - A function that triggers a fetch request.
+ * @returns  {JSX.Element}
+ * @example
+ * <DetailedCard data={data} setTriggerFetch={setTriggerFetch} />
+ */
 
 const DetailedCard = ({ data, setTriggerFetch }) => {
   const [guests, setGuests] = useState(1);
@@ -26,8 +38,11 @@ const DetailedCard = ({ data, setTriggerFetch }) => {
   const { response, doFetch } = useLazyFetch();
   const { media, name, location, maxGuests, meta, description, bookings, price, owner, _count } = data?.venue || data || {};
   const { wifi, parking, breakfast, pets } = meta || {};
-
   let { id, view } = useParams();
+
+  /**
+   * useEffect hook that runs when the view or loggedIn state changes. It sets the pageState based on the view prop.
+   */
   useEffect(() => {
     if (loggedIn) {
       switch (view) {
@@ -41,6 +56,9 @@ const DetailedCard = ({ data, setTriggerFetch }) => {
     }
   }, [view, loggedIn]);
 
+  /**
+   * useEffect hook that runs when the data, bookings, or pageState changes. It sets the dateFrom, dateTo, and guests based on the data prop. This is used to update the booking details.
+   */
   useEffect(() => {
     if (pageState === "bookings" && data) {
       setDateFrom(new Date(data.dateFrom));
@@ -49,8 +67,17 @@ const DetailedCard = ({ data, setTriggerFetch }) => {
     }
   }, [data, bookings, pageState]);
 
+  /**
+   * A custom hook that calculates the total price based on the price, dateFrom, and dateTo.
+   */
   const totalPrice = UsePriceCalculator(price, dateFrom, dateTo);
 
+  /**
+   *  Function that handles the submit request. It takes a url, method, and body as arguments, and it calls the executeSubmit function with the url, method, body, and doFetch function. It sets the action state based on the method.
+   * @param {string} url
+   * @param {string} method
+   * @param {object} body
+   */
   const handleSubmit = (url, method, body) => {
     body = body ? body : {};
     executeSubmit(url, method, body, doFetch);
@@ -58,6 +85,10 @@ const DetailedCard = ({ data, setTriggerFetch }) => {
   };
 
   let actionType = view === "venues" ? "venue" : "booking";
+
+  /**
+   * A custom hook that handles the response from the fetch request. It takes the response, actionType, action, and setTriggerFetch as arguments. And it handles the following redirects based on the actionType and action, and user messages based on the response status.
+   */
   useResponseHandler(response, actionType, action, setTriggerFetch);
 
   return (

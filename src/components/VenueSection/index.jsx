@@ -6,6 +6,15 @@ import UseUpdateSortParams from "../../hooks/UseUpdateSortParams";
 import { useContext } from "react";
 import MessageContext from "../../utils/MessageContexts";
 
+/**
+ *  A component that displays the venue section. It uses the UseUpdateSortParams hook to update the sorting parameters and Url based on the user's selection.
+ * It uses the useFetch hook to fetch the venues from the server based on the sorting parameters.
+ * It uses the MessageContext to display an error message if an error occurs during the fetching process.
+ * @returns {JSX.Element}
+ * @example
+ * <VenueSection />
+ */
+
 const VenueSection = () => {
   const { isOpen, setIsOpen, dynamicHeader, sortingUrl, sortBy, sortOrder, page, limit } = UseUpdateSortParams();
   const { data, isLoading, isError } = useFetch(sortingUrl);

@@ -1,12 +1,25 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../AuthHandler";
+import useAuth from "../AuthHandler/useAuth";
 import { useState } from "react";
 import { IoIosSettings } from "react-icons/io";
+
+/**
+ * A component that displays the user profile menu, and handles the logout functionality.
+ * @param {Function} setIsOpen - A function that sets the state of the menu.
+ * @param {string} className - A string that contains the class name of the menu.
+ * @returns {JSX.Element}
+ * @example
+ * <ProfileMenu setIsOpen={setIsOpen} className="bg-white border border-gray-200" />
+ */
 
 const ProfileMenu = ({ setIsOpen, className }) => {
   const { setShowProfileForm, setLoggedIn } = useAuth();
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
   const navigate = useNavigate();
+
+  /**
+   * A function that handles the logout functionality by removing the user from the local storage, setting the user state to null, and navigating to the home page.
+   */
   const handleLogout = () => {
     localStorage.removeItem("user");
     setUser(null);

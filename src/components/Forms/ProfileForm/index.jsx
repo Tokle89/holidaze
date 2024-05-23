@@ -7,17 +7,32 @@ import executeSubmit from "../../../utils/handleSubmit";
 import Urls from "../../../constants/url";
 import { useEffect } from "react";
 import useResponseHandler from "../../../hooks/useResponseHandler";
-import { useAuth } from "../../AuthHandler";
+import useAuth from "../../AuthHandler/AuthProvider";
+
+/**
+ * A form component that allows users to update their profile avatar and register/unregister as a venue manager.
+ * It uses the useAuth hook to access the setShowProfileForm function to close the form after submission.
+ * It uses the useLazyFetch hook to send a PUT request to the server to update the user's profile.
+ * It uses the useResponseHandler hook to handle the response from the server after updating the user's profile.
+ * @returns {JSX.Element}
+ */
+
 const ProfileForm = () => {
   const { setShowProfileForm } = useAuth();
   const { response, doFetch } = useLazyFetch();
   const { name, venueManager } = JSON.parse(localStorage.getItem("user"));
   console.log(name);
 
+  /**
+   * A yup schema for validating the profile form fields.
+   */
   const schema = yup.object({
     avatar: yup.string().url("Avatar must be a valid URL"),
   });
 
+  /**
+   * A react-hook-form hook for handling the profile form.
+   */
   const {
     register,
     handleSubmit,
@@ -27,6 +42,14 @@ const ProfileForm = () => {
     resolver: yupResolver(schema),
   });
 
+  /**
+   * Function that handles the submission of the profile form by sending the Url, method, data, and doFetch function to the executeSubmit function.
+   * It also deletes the avatar field if it is empty before sending the data to the server.
+   * @param {Object} data - An object containing the user's profile details.
+   * @returns {void}
+   * @example
+   * onSubmit({avatar: "https://example.com/avatar.jpg", VenueManager: true})
+   */
   const onSubmit = (data) => {
     if (data.avatar === "") {
       delete data.avatar;
@@ -36,6 +59,9 @@ const ProfileForm = () => {
     executeSubmit(`${Urls.profileUrl}/${name}`, "PUT", data, doFetch);
   };
 
+  /**
+   * A useEffect hook that resets the form and closes the profile form after the user's profile has been updated.
+   */
   useEffect(() => {
     if (response) {
       reset();

@@ -1,5 +1,11 @@
 import { Link } from "react-router-dom";
 import Logo from "../Logo";
+
+/**
+ * Footer component that displays the Logo, the technologies used, and the social media links.
+ * @returns {JSX.Element}
+ */
+
 const Footer = () => (
   <footer className="  bg-primary p-5  text-white">
     <div className="max-w-7xl m-auto flex flex-col md:flex-row gap-5  items-center md:justify-between md:items-start">

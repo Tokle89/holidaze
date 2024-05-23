@@ -7,6 +7,15 @@ import CustomButton from "../../Button";
 import TruncateString from "../../TruncateTitle";
 import { useParams } from "react-router-dom";
 
+/**
+ * A Link card component that displays venue details. It displays the venue's name, location, rating, price, and amenities. It also has a button that links to the venue details page, where a user can view more details about the venue.
+ * It uses a Card component from the Material Tailwind library to display the venue details.
+ * It uses a TruncateString component to truncate the venue name and location if they are too long.
+ * It uses the userName and view from the useParams to determine if the user is the owner of the venue, and it displays the links accordingly.
+ * @param {object} data - An object containing venue details.
+ * @returns
+ */
+
 const CardLink = ({ data }) => {
   const { media, name, location, rating, meta, price } = data;
   const { wifi, parking, breakfast, pets } = meta;

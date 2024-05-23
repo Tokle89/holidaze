@@ -3,9 +3,21 @@ import { NavLink, useLocation } from "react-router-dom";
 import { IoClose } from "react-icons/io5";
 import handleActiveClass from "../../../utils/handleActiveClass";
 import { FaSearch } from "react-icons/fa";
-import { useAuth } from "../../AuthHandler";
+import useAuth from "../../AuthHandler/useAuth";
 import LoginButton from "../../AuthButtons/loginBtn";
 import RegisterButton from "../../AuthButtons/RegisterBtn";
+
+/**
+ * MobileNav component that displays the mobile navigation menu.
+ * It uses the useLocation hook to access the current location, that is used to set the active class on the navigation links.
+ * It uses the useAuth hook to access the loggedIn state, that is used to conditionally render the ProfileMenu or the Login and Register buttons.
+ * The setShowMenu function is used to toggle the mobile navigation menu.
+ * @param {Function} setShowMenu - The function that toggles the mobile navigation menu.
+ * @returns {JSX.Element}
+ * @example
+ * <MobileNav setShowMenu={setShowMenu} />
+ */
+
 const MobileNav = ({ setShowMenu }) => {
   const location = useLocation();
   const { loggedIn } = useAuth();

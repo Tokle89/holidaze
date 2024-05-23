@@ -2,14 +2,16 @@ import Search from "../../components/Search";
 import { useParams } from "react-router-dom";
 import CardLink from "../../components/Cards/VenueCard";
 import useSearch from "../../hooks/UseSearch";
+import RenderPageHeadInfo from "../../hooks/UsePageHeadHandler";
 
 const SearchPage = () => {
   const { id } = useParams();
   const { searchResults, isLoading, error } = useSearch(id);
+  RenderPageHeadInfo("Search", "Search for your dream holiday");
   return (
     <main className="my-10 max-w-7xl mx-auto">
-      <div className="space-y-5">
-        <h1 className="text-center text-primary">Search for your dream holiday</h1>
+      <div className="space-y-5 mb-10">
+        <h1 className="text-center text-2xl md:text-4xl text-primary">Search for your dream holiday</h1>
         <Search />
       </div>
       {isLoading && <p>Loading...</p>}
@@ -21,7 +23,7 @@ const SearchPage = () => {
           ))}
         </div>
       )}
-      {searchResults.length === 0 && !isLoading && !error && <p className="text-center text-red-400 font-bold mt-10">No matching results found</p>}
+      {searchResults.length === 0 && !isLoading && !error && id && <p className="text-center text-red-400 font-bold mt-10">No matching results found</p>}
     </main>
   );
 };

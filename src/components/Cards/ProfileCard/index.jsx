@@ -1,3 +1,12 @@
+/**
+ *  ProfileCard component. A Card component that displays user details. It displays the user's name, email, and avatar. It also displays  if the user is a venue manager.
+ *
+ * @param {object} data - An object containing user details.
+ * @returns {JSX.Element}
+ * @example
+ * <ProfileCard data={user} />
+ */
+
 const ProfileCard = ({ data: { name, avatar, email, venueManager } }) => {
   return (
     <div className={` flex justify-center p-5 gap-2 md:gap-10 items-center  `}>

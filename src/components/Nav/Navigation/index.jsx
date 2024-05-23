@@ -2,7 +2,16 @@ import { NavLink } from "react-router-dom";
 import { FaSearch } from "react-icons/fa";
 import { useLocation } from "react-router-dom";
 import handleActiveClass from "../../../utils/handleActiveClass";
-import { useAuth } from "../../AuthHandler";
+import useAuth from "../../AuthHandler/useAuth";
+
+/**
+ * Navigation component that displays the navigation links on large screens.
+ * It uses the useLocation hook to access the current location, that is used to set the active class on the navigation links.
+ * It uses the useAuth hook to access the loggedIn state, that is used to conditionally render the Create a venue or Become a host link.
+ * @returns {JSX.Element}
+ * @example
+ * <Nav />
+ */
 
 const Nav = () => {
   const location = useLocation();

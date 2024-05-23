@@ -5,11 +5,14 @@ import Urls from "../../constants/url";
 import Loader from "../../components/Loader";
 import MessageContext from "../../utils/MessageContexts";
 import { useContext } from "react";
+import RenderPageHeadInfo from "../../hooks/UsePageHeadHandler";
 
 const DetailedVenue = () => {
   const { id } = useParams();
   const { showMessage } = useContext(MessageContext);
   const { data, isLoading, isError } = useFetch(`${Urls.venuesUrl}/${id}${Urls.venueQueryParamUrl}`);
+  RenderPageHeadInfo("Details", "View your venue or event details here");
+
   return (
     <main className="my-10 px-5">
       {isLoading && <Loader />}

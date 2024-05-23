@@ -1,3 +1,14 @@
+/**
+ *
+ * @param {boolean} show - A boolean that determines if the message should be displayed.
+ * @param {string} type - A string that determines the type of message to be displayed. It can be "error" or "success".
+ * @param {string} content - A string that contains the message content to be displayed.
+ * @param {function} hideMessage - A function that hides the message when called.
+ * @returns  {JSX.Element}
+ * @example
+ * <UserMessage show={true} type="error" content="An error occurred" hideMessage={() => setShowMessage(false)} />
+ */
+
 const UserMessage = ({ show, type, content, hideMessage }) => {
   return (
     <>

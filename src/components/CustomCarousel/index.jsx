@@ -2,6 +2,15 @@ import { Carousel, IconButton } from "@material-tailwind/react";
 
 import { FaArrowAltCircleLeft, FaArrowAltCircleRight } from "react-icons/fa";
 
+/**
+ * A custom carousel component that displays images in a carousel. It uses the Carousel component from the Material Tailwind library to display the images.
+ * It uses the FaArrowAltCircleLeft and FaArrowAltCircleRight icons from the react-icons/fa library to display the previous and next arrows.
+ * @param {Array} media - An array of objects containing image URLs and alt text.
+ * @returns  {JSX.Element}
+ * @example
+ * <CustomCarousel media={media} />
+ */
+
 const CustomCarousel = ({ media }) => {
   return (
     <Carousel

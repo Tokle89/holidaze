@@ -3,11 +3,22 @@ import Nav from "../Nav/Navigation";
 import { MdMenu } from "react-icons/md";
 import { useState, useEffect } from "react";
 import MobileNav from "../Nav/MobileNav";
-import { useAuth } from "../AuthHandler";
+import useAuth from "../AuthHandler/useAuth";
 import LoginButton from "../AuthButtons/loginBtn";
 import RegisterButton from "../AuthButtons/RegisterBtn";
 import ProfileMenu from "../UserProfileMenu";
 import UseWindowResizeEffect from "../../hooks/useWindowResize";
+
+/**
+ * Header component that displays the Logo, Navigation, and User Profile Menu.
+ * It uses the useAuth hook to access the loggedIn state and the user object.
+ * The useAuth hook also provides the setUser function to update the user object, and toggles the  auth buttons and the user profile menu.
+ * It uses the useState and useEffect hooks to manage the showMenu and isOpen states.
+ * It uses the UseWindowResizeEffect hook to manage the showMenu and isOpen states based on the window size.
+ * These states are used to toggle the mobile navigation menu and the user profile menu.
+ * @returns {JSX.Element}
+ */
+
 const Header = () => {
   const [showMenu, setShowMenu] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -15,6 +26,9 @@ const Header = () => {
   const { loggedIn } = useAuth();
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
 
+  /**
+   * A useEffect hook that listens for changes in the local storage and updates the user object accordingly.
+   */
   useEffect(() => {
     const handleStorageChange = () => {
       setUser(JSON.parse(localStorage.getItem("user")));
@@ -27,6 +41,9 @@ const Header = () => {
     };
   }, [loggedIn]);
 
+  /**
+   * A custom hook that manages the showMenu and isOpen states based on the  screen size.
+   */
   UseWindowResizeEffect(setShowMenu, setIsOpen);
   return (
     <header className=" z-50   relative inset-0 bg-primary p-3.5 ">

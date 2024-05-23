@@ -1,3 +1,12 @@
+/**
+ *  TruncateString component is used to truncate the string based on if the string is longer than the length provided
+ * @param {String} title The title of the string
+ * @param {Number} length The length of the string
+ * @returns  {JSX.Element}
+ * @example
+ * <TruncateString title="This is a long title" length={17} />
+ */
+
 const TruncateString = ({ title, length }) => {
   const maxLength = length || 17;
   let truncatedTitle = title;

@@ -4,10 +4,26 @@ import { Link } from "react-router-dom";
 import CardLink from "../Cards/VenueCard";
 import BookingCard from "../Cards/ProfileBookingCard";
 
+/**
+ *  A component that displays the user's bookings and venues.
+ * It uses the useState hook to manage the active button state and and what container of cards to display.
+ *
+ * @param {Object} data - An object containing the user's bookings and venues.
+ * @param {string} view - A string containing the view mode.
+ * @param {string} userName - A string containing the user's name.
+ * @returns {JSX.Element}
+ * @example
+ * <UserBookingsAndVenues data={data} view="bookings" userName="JohnDoe" />
+ */
+
 const UserBookingsAndVenues = ({ data, view, userName }) => {
   const { bookings, venues } = data;
   const [activeButton, setActiveButton] = useState(true);
   const { name } = JSON.parse(localStorage.getItem("user"));
+
+  /**
+   * A useEffect hook that listens for changes in the view state and updates the active button state and the container of cards accordingly.
+   */
   useEffect(() => {
     if (view === "bookings") {
       setActiveButton(true);

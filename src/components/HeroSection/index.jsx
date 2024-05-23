@@ -1,5 +1,12 @@
 import Search from "../Search";
 
+/**
+ *  HeroSection component that displays the hero section with a background image and a search component.
+ * @returns {JSX.Element}
+ * @example
+ * <HeroSection />
+ */
+
 const HeroSection = () => {
   return (
     <div className="relative h-[450px] ">

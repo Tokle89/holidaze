@@ -1,8 +1,12 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 
-const AuthContext = createContext();
+/**
+ * AuthProvider component is a context provider that provides the loggedIn state to the entire application. It also provides the authMode state to toggle between login and register form, and showModal state to toggle the visibility of the login/register form. It also provides the showProfileForm state to toggle the visibility of the profile form.
+ */
 
-export const AuthProvider = ({ children }) => {
+export const AuthContext = createContext();
+
+const AuthProvider = ({ children }) => {
   const [loggedIn, setLoggedIn] = useState(false);
   const [authMode, setAuthMode] = useState(true);
   const [showModal, setShowModal] = useState(false);
@@ -18,6 +22,4 @@ export const AuthProvider = ({ children }) => {
   return <AuthContext.Provider value={{ loggedIn, setLoggedIn, authMode, setAuthMode, showModal, setShowModal, showProfileForm, setShowProfileForm }}>{children}</AuthContext.Provider>;
 };
 
-export const useAuth = () => {
-  return useContext(AuthContext);
-};
+export default AuthProvider;

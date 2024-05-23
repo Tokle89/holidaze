@@ -1,6 +1,15 @@
 import CustomButton from "../../Button";
 import { Link } from "react-router-dom";
 
+/**
+ * A card component that displays booking details. It displays the venue name, location, booking dates, and number of guests. It also has a button that links to the venue details page, where a user can view more details about his/hers booking.
+ * It uses the userName and name from the localStorage to determine if the user is the owner of the booking, and it displays the links accordingly.
+ * @param {object} data - An object containing booking details.
+ * @returns {JSX.Element}
+ * @example
+ * <BookingCard data={booking} userName={userName} />
+ */
+
 const BookingCard = ({
   data: {
     dateFrom,

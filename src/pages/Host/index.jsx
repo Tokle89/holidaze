@@ -1,9 +1,12 @@
 import RegisterButton from "../../components/AuthButtons/RegisterBtn";
-import { useAuth } from "../../components/AuthHandler";
+import useAuth from "../../components/AuthHandler/AuthProvider";
 import CustomButton from "../../components/Button";
 import Accordion from "../../components/Accordion";
+import RenderPageHeadInfo from "../../hooks/UsePageHeadHandler";
 const HostPage = () => {
   const { setShowProfileForm } = useAuth();
+  RenderPageHeadInfo("Host", "Become a host with Holidaze and start earning while creating unforgettable experiences");
+
   return (
     <main className="my-20 px-5">
       <div className="flex flex-col-reverse md:flex-row gap-10  justify-between max-w-7xl mx-auto items-center ">

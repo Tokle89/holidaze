@@ -9,6 +9,7 @@ import DetailedCard from "../../components/Cards/DetailedCard";
 import { useContext } from "react";
 import MessageContext from "../../utils/MessageContexts";
 import Loader from "../../components/Loader";
+import RenderPageHeadInfo from "../../hooks/UsePageHeadHandler";
 
 const ProfilePage = () => {
   const [url, setUrl] = useState();
@@ -19,6 +20,8 @@ const ProfilePage = () => {
   const { accessToken, name } = JSON.parse(localStorage.getItem("user"));
   const [triggerFetch, setTriggerFetch] = useState(false);
   const { showMessage } = useContext(MessageContext);
+  RenderPageHeadInfo("Profile", "View your profile here");
+
   const fetchOptions = useMemo(
     () => ({
       method: "GET",
