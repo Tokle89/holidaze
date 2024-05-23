@@ -122,7 +122,7 @@ const VenueForm = () => {
 
   useResponseHandler(response, "venue", method);
   return (
-    <main className="m-auto my-10  ">
+    <main className="m-auto my-10 px-5  ">
       <div className=" w-full md:w-[600px]">
         <div className="  text-right text-blue-gray-500"></div>
         <div className="relative  text-tertiary shadow-none rounded-xl bg-clip-border">
@@ -168,7 +168,7 @@ const VenueForm = () => {
 
                 {fields.map((item, index) => (
                   <div key={item.id} className="relative h-11 w-full min-w-[200px]">
-                    <p className=" text-red-700 font-medium my-1">{errors.media && errors.media[index] && errors.media[index].url && errors.media[index].url.message}</p>
+                    <p className={`text-red-700 font-medium my-1 ${index === 1 && `mt-3`}`}>{errors.media && errors.media[index] && errors.media[index].url && errors.media[index].url.message}</p>
                     <div className={`flex ${length > 1 && `me-2`}`}>
                       <input
                         {...register(`media.${index}.url`)}

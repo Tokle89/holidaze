@@ -68,7 +68,7 @@ const DetailedCard = ({ data, setTriggerFetch }) => {
           <div className=" flex flex-col  justify-center md:flex-row md:justify-between gap-10 ">
             <div className="space-y-4 mt-4  w-full md:w-4/5">
               {pageState === "venues" && (
-                <div className=" flex justify-between mt-5">
+                <div className=" flex flex-col lg:flex-row gap-5 justify-between mt-5">
                   <CustomButton onClick={() => handleSubmit(`${Urls.venuesUrl}/${id}`, "DELETE")} className={`bg-red-800 border border-red-800 hover:text-red-800  hover:bg-white min-w-[250px] h`}>
                     Delete venue
                   </CustomButton>
@@ -164,7 +164,7 @@ const DetailedCard = ({ data, setTriggerFetch }) => {
               </div>
               <h2 className="text-2xl mt-10">Hosted by:</h2>
               {loggedIn ? (
-                <Link to={`/profile/${owner.name}`} className="shadow-md hover:shadow-lg p-5 inline-block">
+                <Link to={`/profile/${owner.name}`} className="shadow-md hover:shadow-lg inline-block">
                   <ProfileCard data={owner} />
                 </Link>
               ) : (
@@ -221,14 +221,14 @@ const DetailedCard = ({ data, setTriggerFetch }) => {
                 <div className="relative h-10 w-full min-w-[200px]">
                   <select
                     value={guests ? guests : 1}
-                    className="peer h-[2.5em] w-full rounded-[7px] border border-blue-gray-200 border-t-transparent bg-transparent px-3 pt-1 font-sans text-base font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 empty:!bg-gray-900 focus:border-2 focus:border-gray-900 focus:border-t-transparent focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50 appearance-none"
+                    className="peer h-[3em] w-full rounded-[7px] border border-blue-gray-200 border-t-transparent bg-transparent px-3 pt-1 font-sans text-base font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 empty:!bg-gray-900 focus:border-2 focus:border-gray-900 focus:border-t-transparent focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50 appearance-none"
                     onChange={(number) => {
                       setGuests(Number(number.target.value));
                     }}
                   >
                     {Array.from({ length: maxGuests }, (_, i) => i + 1).map((number) => (
                       <option key={number} value={number}>
-                        {number} guests
+                        {number} Guests
                       </option>
                     ))}
                   </select>

@@ -78,8 +78,8 @@ const AuthForm = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [response, error]);
   return (
-    <div onMouseDown={() => setShowModal(false)} className="  fixed inset-0 z-[1000] grid h-screen w-screen place-items-center bg-black bg-opacity-60 backdrop-blur-sm transition-opacity duration-300">
-      <div onMouseDown={(e) => e.stopPropagation()} className="relative p-4   md:min-w-[400px]  rounded-lg bg-white font-sans text-base font-light leading-relaxed antialiased shadow-2xl">
+    <div onMouseDown={() => setShowModal(false)} className="  fixed inset-0 z-[1000] grid h-screen w-screen  place-items-center bg-black bg-opacity-60 backdrop-blur-sm transition-opacity duration-300">
+      <div onMouseDown={(e) => e.stopPropagation()} className="relative p-4 md:w-[450px] rounded-lg bg-white font-sans text-base font-light leading-relaxed antialiased shadow-2xl overflow-y-auto mt-16 mb-16 h-3/4 md:h-auto">
         <div className="  text-right text-blue-gray-500">
           <button onClick={() => setShowModal(false)} className="  font-sans text-2xl font-bold text-red-500 uppercase transition-all rounded-lg middle none center hover:bg-red-500/10 active:bg-red-500/30 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
             x

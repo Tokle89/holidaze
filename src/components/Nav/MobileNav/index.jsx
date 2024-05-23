@@ -36,18 +36,31 @@ const MobileNav = ({ setShowMenu }) => {
         >
           Venues
         </NavLink>
-        <NavLink
-          to="/host"
-          className={handleActiveClass(
-            location,
-            "/host",
-            "ps-1 py-4 flex items-center w-full rounded  leading-tight transition-all  outline-none text-start hover:bg-blue-gray-50 hover:bg-opacity-80 hover:text-blue-gray-900 focus:bg-blue-gray-50 focus:bg-opacity-80 focus:text-blue-gray-900 active:bg-blue-gray-50 active:bg-opacity-80 active:text-blue-gray-900"
-          )}
-        >
-          Become a host
-        </NavLink>
-        <NavLink to="/search" className={handleActiveClass(location, "/search", " p-2 hover:bg-blue-gray-50 hover:bg-opacity-80 hover:text-blue-gray-900")}>
-          <FaSearch />
+        {loggedIn ? (
+          <NavLink
+            to="/venueForm"
+            className={handleActiveClass(
+              location,
+              "/host",
+              "ps-1 py-4 flex items-center w-full rounded  leading-tight transition-all  outline-none text-start hover:bg-blue-gray-50 hover:bg-opacity-80 hover:text-blue-gray-900 focus:bg-blue-gray-50 focus:bg-opacity-80 focus:text-blue-gray-900 active:bg-blue-gray-50 active:bg-opacity-80 active:text-blue-gray-900"
+            )}
+          >
+            Create venue
+          </NavLink>
+        ) : (
+          <NavLink
+            to="/host"
+            className={handleActiveClass(
+              location,
+              "/host",
+              "ps-1 py-4 flex items-center w-full rounded  leading-tight transition-all  outline-none text-start hover:bg-blue-gray-50 hover:bg-opacity-80 hover:text-blue-gray-900 focus:bg-blue-gray-50 focus:bg-opacity-80 focus:text-blue-gray-900 active:bg-blue-gray-50 active:bg-opacity-80 active:text-blue-gray-900"
+            )}
+          >
+            Become a host
+          </NavLink>
+        )}
+        <NavLink to="/search" className={handleActiveClass(location, "/search", " flex  gap-4  py-4 ps-1 hover:bg-blue-gray-50 hover:bg-opacity-80 hover:text-blue-gray-900")}>
+          <FaSearch /> Search
         </NavLink>
       </nav>
       {loggedIn ? (

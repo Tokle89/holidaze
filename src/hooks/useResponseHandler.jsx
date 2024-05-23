@@ -72,7 +72,10 @@ const useResponseHandler = (response, actionType, action, setTriggerFetch) => {
               case "PUT":
                 showMessage("success", "Profile updated");
                 setTimeout(() => {
-                  localStorage.setItem("user", JSON.stringify(response.data));
+                  let existingUser = JSON.parse(localStorage.getItem("user"));
+                  let updatedUser = { ...existingUser, ...response.data };
+                  localStorage.setItem("user", JSON.stringify(updatedUser));
+
                   navigate(`/profile/${userName}`);
                   hideMessage();
                 }, 1000);

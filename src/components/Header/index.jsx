@@ -16,7 +16,15 @@ const Header = () => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
 
   useEffect(() => {
-    setUser(JSON.parse(localStorage.getItem("user")));
+    const handleStorageChange = () => {
+      setUser(JSON.parse(localStorage.getItem("user")));
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
   }, [loggedIn]);
 
   UseWindowResizeEffect(setShowMenu, setIsOpen);
