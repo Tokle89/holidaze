@@ -1,7 +1,13 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import Urls from "../constants/url";
-
+/**
+ *  A custom hook that updates the sorting parameters based on the URL hash and then sets the dynamic header based on the sorting parameters.
+ *  It Updates the sortingUrl based on the sorting parameters and the URL hash.
+ * @returns {Object} - An object containing the state variables and functions
+ * @example
+ * const { isOpen, setIsOpen, dynamicHeader, sortingUrl, sortBy, sortOrder, page, limit } = UseUpdateSortParams();
+ */
 const UseUpdateSortParams = () => {
   const [dynamicHeader, setDynamicHeader] = useState("Latest Venues");
   const [isOpen, setIsOpen] = useState(false);

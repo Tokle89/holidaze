@@ -11,6 +11,13 @@ import { useLocation } from "react-router-dom";
 import { HiOutlinePlusSm, HiOutlineMinus } from "react-icons/hi";
 import RenderPageHeadInfo from "../../hooks/UsePageHeadHandler";
 
+/**
+ * The Venue Form page
+ *  A form component that allows users to create or update a venue. It uses the useLocation hook to access the state from the previous page, the useLazyFetch hook to send a POST or PUT request to the server to create or update the venue, and the useResponseHandler hook to handle the response from the server after creating or updating the venue.
+ * @returns {JSX.Element}
+ * @example
+ * <VenueForm />
+ */
 const VenueForm = () => {
   RenderPageHeadInfo("Venue Form", "Create or update your venue");
   const [step, setStep] = useState(1);
@@ -23,6 +30,9 @@ const VenueForm = () => {
   let method = state ? `PUT` : `POST`;
   let url = state ? `${Urls.venuesUrl}/${state.id}` : Urls.venuesUrl;
 
+  /**
+   * A yup schema for validating the venue form fields.
+   */
   const schema = yup.object({
     name: yup.string().min(3).required(`Name is required`),
     description: yup.string().min(3).required(`Description is required`),
@@ -61,6 +71,9 @@ const VenueForm = () => {
       country: yup.string().required("Country is required"),
     }),
   });
+  /**
+   * A react-hook-form hook for handling the venue form.
+   */
   const {
     register,
     control,
@@ -97,12 +110,20 @@ const VenueForm = () => {
   });
 
   const watchAllFields = watch();
-
+  /**
+   * An array containing the fields for each step of the form.
+   */
   const FieldsPerStep = [
     [`name`, `description`, `media`, `price`, `maxGuests`],
     [`rating`, `wifi`, `pets`, `breakfast`, `parking`],
     [`location.address`, `location.city`, `location.zip`, `location.country`],
   ];
+  /**
+   * A function that triggers the validation of the fields for the current step and moves to the next step if the fields are valid.
+   * @returns {void}
+   * @example
+   * nextStep()
+   */
 
   const nextStep = async () => {
     const result = await trigger(FieldsPerStep[step - 1]);
@@ -111,17 +132,31 @@ const VenueForm = () => {
     }
   };
 
+  /**
+   * A function that moves to the previous step.
+   * @returns {void}
+   * @example
+   * prevStep()
+   */
   const prevStep = () => {
     setStep(step - 1);
   };
 
+  /**
+   *  A function that handles the submission of the venue form by sending the Url, method, data, and doFetch function to the executeSubmit function. It also filters out empty media fields before sending the data to the server.
+   * @param {Object} data
+   * @returns {void}
+   * @example
+   * onSubmit({name: "Venue name", description: "Venue description", media: [{url: "https://example.com/image.jpg"}], price: 100, maxGuests: 10, rating: 4, meta: {wifi: true, parking: false, breakfast: true, pets: false}, location: {address: "Street address", city: "City", zip: "Zip code", country: "Country"}})
+   */
   const onSubmit = (data) => {
     data.media = data.media.filter((media) => media.url !== "");
-    console.log("data", data);
 
     executeSubmit(url, method, data, doFetch);
   };
-
+  /**
+   * A custom hook that handles the response from the server after creating or updating the venue.
+   */
   useResponseHandler(response, "venue", method);
   return (
     <main className="m-auto my-10 px-5  ">

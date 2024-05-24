@@ -7,6 +7,12 @@ import MessageContext from "../../utils/MessageContexts";
 import { useContext } from "react";
 import RenderPageHeadInfo from "../../hooks/UsePageHeadHandler";
 
+/**
+ *  The Detailed page component that fetches the venue data based on the venue id. It uses the useParams hook to access the venue id, the useFetch hook to fetch the venue data, and the MessageContext to display a message if an error occurs.
+ * @returns {JSX.Element}
+ * @example
+ * <DetailedVenue />
+ */
 const DetailedVenue = () => {
   const { id } = useParams();
   const { showMessage } = useContext(MessageContext);

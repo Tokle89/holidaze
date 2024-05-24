@@ -1,7 +1,15 @@
 import { useState, useEffect } from "react";
 import useFetch from "./useFetch";
 import Urls from "../constants/url";
-
+/**
+ * A custom hook that fetches data from the venues API and filters the results based on the search term from the user.
+ *
+ * @param {String} searchTerm
+ * @returns  {Object} - An object containing the searchResults, isLoading, and error.
+ * @example
+ * const { searchResults, isLoading, error } = useSearch("Oslo");
+ *
+ */
 const useSearch = (searchTerm) => {
   const [page, setPage] = useState(1);
   const [results, setResults] = useState([]);

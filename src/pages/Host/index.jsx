@@ -3,6 +3,14 @@ import useAuth from "../../components/AuthHandler/AuthProvider";
 import CustomButton from "../../components/Button";
 import Accordion from "../../components/Accordion";
 import RenderPageHeadInfo from "../../hooks/UsePageHeadHandler";
+
+/**
+ *  The Host page component that displays information about becoming a host with Holidaze.
+ * @returns {JSX.Element}
+ * @example
+ * <HostPage />
+ */
+
 const HostPage = () => {
   const { setShowProfileForm } = useAuth();
   RenderPageHeadInfo("Host", "Become a host with Holidaze and start earning while creating unforgettable experiences");

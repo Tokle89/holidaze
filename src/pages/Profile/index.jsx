@@ -10,7 +10,11 @@ import { useContext } from "react";
 import MessageContext from "../../utils/MessageContexts";
 import Loader from "../../components/Loader";
 import RenderPageHeadInfo from "../../hooks/UsePageHeadHandler";
-
+/**
+ *  The Profile page component that displays the user's profile information and the users bookings/venues.
+ * It uses the useParams hook to access the username from the URL. It uses the useLazyFetch hook to fetch the user's profile data and the detailed data for the bookings/venues.
+ * @returns {JSX.Element}
+ */
 const ProfilePage = () => {
   const [url, setUrl] = useState();
   const params = useParams();
@@ -22,6 +26,9 @@ const ProfilePage = () => {
   const { showMessage } = useContext(MessageContext);
   RenderPageHeadInfo("Profile", "View your profile here");
 
+  /**
+   * A useMemo hook that returns the fetchOptions object containing the method, headers, and authorization token.
+   */
   const fetchOptions = useMemo(
     () => ({
       method: "GET",
@@ -37,10 +44,16 @@ const ProfilePage = () => {
   const { response: profileData, isLoading: profileLoading, isError: profileError, doFetch: fetchProfile } = useLazyFetch();
   const { response: detailedData, isLoading: detailedLoading, isError: detailedError, doFetch: fetchDetailed } = useLazyFetch();
 
+  /**
+   * A useEffect hook that fetches the user's profile data when the component mounts or when the profileUrl or fetchOptions change.
+   */
   useEffect(() => {
     fetchProfile(profileUrl, fetchOptions);
   }, [profileUrl, fetchOptions]);
 
+  /**
+   * A useEffect hook that sets the URL based on the view and id parameters from the URL.
+   */
   useEffect(() => {
     if (view === "bookings" && id) {
       setUrl(`${Urls.bookingsUrl}/${id}${Urls.bookingQueryParamUrl}`);
@@ -48,7 +61,9 @@ const ProfilePage = () => {
       setUrl(`${Urls.venuesUrl}/${id}${Urls.venueQueryParamUrl}`);
     }
   }, [view, id]);
-
+  /**
+   * A useEffect hook that fetches the detailed data when the URL or triggerFetch state changes.
+   */
   useEffect(() => {
     if (url) {
       if (id) {

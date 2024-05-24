@@ -4,6 +4,12 @@ import CardLink from "../../components/Cards/VenueCard";
 import useSearch from "../../hooks/UseSearch";
 import RenderPageHeadInfo from "../../hooks/UsePageHeadHandler";
 
+/**
+ *  The Search page component that displays the Search component and the CardLink component. It uses the useParams hook to access the search query, the useSearch hook to fetch the search results, and the RenderPageHeadInfo hook to set the dynamic header based on the search query.
+ * @returns {JSX.Element}
+ * @example
+ * <SearchPage />
+ */
 const SearchPage = () => {
   const { id } = useParams();
   const { searchResults, isLoading, error } = useSearch(id);

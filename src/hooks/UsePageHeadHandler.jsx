@@ -6,7 +6,7 @@ import { useEffect } from "react";
  * @param {String} description  The description of the page
  * @returns {void}
  * @example
- * RenderPageHeadInfo("Home", "This is the home page")
+ * RenderPageHeadInfo("Holidaze | Home", "This is the home page")
  */
 
 const RenderPageHeadInfo = (title, description) => {

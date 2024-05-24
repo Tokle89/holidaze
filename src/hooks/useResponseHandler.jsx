@@ -3,6 +3,18 @@ import { useContext } from "react";
 import MessageContext from "../utils/MessageContexts";
 import { useNavigate } from "react-router-dom";
 
+/**
+ *  A custom hook that handles the response from the API. Then displays a message and redirects the user to the appropriate page.
+ *
+ * @param {Object} response - The response from the API
+ * @param {String} actionType - The type of action (booking, venue, profile)
+ * @param {String} action - The action to perform (POST, PUT, DELETE)
+ * @param {Function} setTriggerFetch - A function that triggers a fetch request
+ * @returns {void}
+ * @example
+ * useResponseHandler(response, "booking", "POST", setTriggerFetch);
+ */
+
 const useResponseHandler = (response, actionType, action, setTriggerFetch) => {
   const { showMessage, hideMessage } = useContext(MessageContext);
   const user = JSON.parse(localStorage.getItem("user"));

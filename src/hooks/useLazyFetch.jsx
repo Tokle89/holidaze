@@ -1,5 +1,15 @@
 import { useState } from "react";
 
+/**
+ * A custom hook that fetches data lazily, by using the doFetch function to send a fetch request to the server.
+ * It returns the response, isError, isLoading, and doFetch function.
+ * @returns {Object} - An object containing the response, isError, isLoading, and doFetch function.
+ * @example
+ * const { response, isError, isLoading, doFetch } = useLazyFetch();
+ * doFetch("https://api.example.com/data", { method: "GET" });
+ *
+ */
+
 const useLazyFetch = () => {
   const [response, setResponse] = useState(null);
   const [isError, setError] = useState(null);
