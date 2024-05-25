@@ -1,5 +1,5 @@
 import RegisterButton from "../../components/AuthButtons/RegisterBtn";
-import useAuth from "../../components/AuthHandler/AuthProvider";
+import useAuth from "../../components/AuthHandler/useAuth";
 import CustomButton from "../../components/Button";
 import Accordion from "../../components/Accordion";
 import RenderPageHeadInfo from "../../hooks/UsePageHeadHandler";

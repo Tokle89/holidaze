@@ -13,7 +13,6 @@ export default withMT({
         primary: "#1D4091",
         secondary: "#ffac4d",
         tertiary: "#1378D1",
-        orange: "#ffac4d",
       },
       fontSize: {
         sm: "0.8rem",

@@ -6,7 +6,7 @@ import Urls from "../../../constants/url";
 import { useEffect, useState } from "react";
 import useLazyFetch from "../../../hooks/useLazyFetch";
 import { useNavigate } from "react-router-dom";
-import useAuth from "../../AuthHandler/AuthProvider";
+import useAuth from "../../AuthHandler/useAuth";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 
 /**
@@ -141,7 +141,7 @@ const AuthForm = () => {
         <form onSubmit={handleSubmit(onSubmit)} className="  mt-8 mb-2 space-y-6  ">
           {!authMode && (
             <div>
-              <h6 className="block mb-3  font-sans  antialiased font-semibold leading-relaxed tracking-normal text-tertiary ">Your user name</h6>
+              <h6 className="block mb-3  font-sans  antialiased font-semibold leading-relaxed tracking-normal text-tertiary ">User name</h6>
               <p className=" text-red-700 font-medium">{errors.name?.message}</p>
               <div className="relative h-11 w-full min-w-[200px]">
                 <input
@@ -153,7 +153,7 @@ const AuthForm = () => {
             </div>
           )}
           <div>
-            <h6 className="block mb-3  font-sans text-base antialiased font-semibold leading-relaxed tracking-normal text-tertiary ">Your email address</h6>
+            <h6 className="block mb-3  font-sans text-base antialiased font-semibold leading-relaxed tracking-normal text-tertiary ">Email address</h6>
             <p className="font-medium text-red-700">{errors.email?.message}</p>
             <div className="relative h-11 w-full min-w-[200px]">
               <input
@@ -165,7 +165,7 @@ const AuthForm = () => {
           </div>
           {!authMode && (
             <div>
-              <h6 className="block mb-3  font-sans text-base antialiased font-semibold leading-relaxed tracking-normal text-tertiary ">Your profile avatar</h6>
+              <h6 className="block mb-3  font-sans text-base antialiased font-semibold leading-relaxed tracking-normal text-tertiary ">Profile avatar</h6>
               <p className="font-medium text-red-700">{errors.avatar?.message}</p>
               <div className="relative h-11 w-full min-w-[200px]">
                 <input
@@ -177,7 +177,7 @@ const AuthForm = () => {
             </div>
           )}
           <div>
-            <h6 className="block mb-3  font-sans text-base antialiased font-semibold leading-relaxed tracking-normal text-tertiary ">Your Password</h6>
+            <h6 className="block mb-3  font-sans text-base antialiased font-semibold leading-relaxed tracking-normal text-tertiary ">Password</h6>
             <p className="font-medium text-red-700">{errors.password?.message}</p>
             <div className="flex">
               <div className="relative h-11 w-full min-w-[200px]">

@@ -7,7 +7,7 @@ import executeSubmit from "../../../utils/handleSubmit";
 import Urls from "../../../constants/url";
 import { useEffect } from "react";
 import useResponseHandler from "../../../hooks/useResponseHandler";
-import useAuth from "../../AuthHandler/AuthProvider";
+import useAuth from "../../AuthHandler/useAuth";
 
 /**
  * A form component that allows users to update their profile avatar and register/unregister as a venue manager.
