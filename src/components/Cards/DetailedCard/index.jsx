@@ -6,7 +6,7 @@ import BookingCalendar from "../../Calendar";
 import { useState, useEffect } from "react";
 import CustomButton from "../../Button";
 import ProfileCard from "../ProfileCard";
-import useAuth from "../../AuthHandler/AuthProvider";
+import useAuth from "../../AuthHandler/useAuth";
 import LoginButton from "../../AuthButtons/loginBtn";
 import { useParams, Link } from "react-router-dom";
 import Urls from "../../../constants/url";
