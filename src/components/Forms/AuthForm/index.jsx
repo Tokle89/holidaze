@@ -97,7 +97,9 @@ const AuthForm = () => {
       const userName = response.data.name;
       setLoggedIn(true);
       setShowModal(false);
-      navigate("/profile/" + userName);
+      setTimeout(() => {
+        navigate("/profile/" + userName);
+      }, 500);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [response, error]);
